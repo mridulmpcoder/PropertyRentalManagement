@@ -31,78 +31,28 @@
             </div>
             <ul>
                 <li><a href="home.jsp">Home</a></li>
-                <li><a href="property.jsp">Property</a></li>
+                <li><a href="/user/openLandlordDashboard">Property</a></li>
                 <li><a href="about.jsp">About</a></li>
                 <li><a href="contact.jsp">Contact</a></li>
             </ul>
             <div class="auth-links">
-                <a href="register.jsp">Register</a>
-                <a href="login.jsp">Login</a>
+                <a href="/user/openRegistrationPage">Register</a>
+                <a href="/user/openLoginPage">Login</a>
             </div>
         </nav>
     </header>
 	
-	<p><a href="/user/openLoginPage">Go to Login Page</a></p>
-
     <!-- Property Listing Section -->
-    <section class="property">
-        <div class="property-info">
-            <h1>401 Biscayne Boulevard, Miami</h1>
-            <h2>$1050/Month</h2>
-            <p>For sale</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-            <ul>
-                <li>3500 Sq Ft</li>
-                <li>3 Beds</li>
-                <li>3.5 Baths</li>
-                <li>2 Garages</li>
-            </ul>
+    <section class="card-section">
+        <div class="card">
+            <h1>Property: 401 Biscayne Boulevard</h1>
+            <h2>$1050/Month - For Rent</h2>
+            <p>Size: 3500 Sq Ft, 3 Beds, 3.5 Baths, 2 Garages</p>
             <a href="property-details.jsp" class="btn">Learn More</a>
         </div>
-        <div class="property-image">
-            <img src="images/property.jpg" alt="Property Image">
-        </div>
     </section>
 
-    <!-- Services Section -->
-    <section class="services">
-        <h2>Our Services</h2>
-        <div class="service">
-            <img src="images/service1.png" alt="Life Style">
-            <h3>Life Style</h3>
-            <p>Description of Life Style service.</p>
-            <a href="service-details.jsp" class="btn">Learn More</a>
-        </div>
-        <div class="service">
-            <img src="images/service2.png" alt="Shell">
-            <h3>Shell</h3>
-            <p>Description of Shell service.</p>
-            <a href="service-details.jsp" class="btn">Learn More</a>
-        </div>
-        <div class="service">
-            <img src="images/service3.png" alt="Loans">
-            <h3>Loans</h3>
-            <p>Description of Loans service.</p>
-            <a href="service-details.jsp" class="btn">Learn More</a>
-        </div>
-    </section>
-
-    <!-- Properties Section -->
-    <section class="properties">
-        <h2>Our Properties</h2>
-        <div class="property-card">
-            <img src="images/property1.jpg" alt="Property 1">
-            <h3>405 Lock House, Goa</h3>
-            <p>Rent: $45</p>
-            <a href="property-details.jsp" class="btn">View All Details</a>
-        </div>
-        <div class="property-card">
-            <img src="images/property2.jpg" alt="Property 2">
-            <h3>Ganga Sagar House, Nashik</h3>
-            <p>Rent: $45</p>
-            <a href="property-details.jsp" class="btn">View All Details</a>
-        </div>
-    </section>
+   
 
     <!-- Footer -->
     <footer>

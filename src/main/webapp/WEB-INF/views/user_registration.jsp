@@ -5,25 +5,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>User Registration Page</title>
-<style>
-form, p {
-	text-align: center;
-}
-
-input {
-	margin-bottom: 10px
-}
-</style>
-</head>
+	<meta charset="UTF-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	    <title>User Registration Page</title>
+	    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
+	</head>
 <body>
 
-	
-
-	
-
-	<form action="register" method="post" enctype="multipart/form-data">
+	<form action="/user/register" method="post" enctype="multipart/form-data">
 		<input type="text" name="firstName" placeholder="Enter First Name" /><br />
 		<input type="text" name="lastName" placeholder="Enter Last Name" /><br />
 		<input type="text" name="emailId" placeholder="Enter Email Id" /><br />
@@ -38,7 +27,7 @@ input {
 
 		<input type="submit" value="Submit" />
 		
-		<p>Not Registered? Click <a href = "/user/register">here</a> to register</p>
+		<p>Already Registered? Click <a href = "/user/openLoginPage">here</a> to login</p>
 		
 		<%@include file="message.jsp" %>
 	</form>

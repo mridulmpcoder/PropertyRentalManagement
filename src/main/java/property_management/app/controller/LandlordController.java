@@ -30,6 +30,11 @@ public class LandlordController {
 	@Autowired
 	UserDaoImpl userDaoImpl;
 
+	@GetMapping("/openPropertyManagement")
+	public String openPropertyManagement() {
+		return "property_management";
+	}
+
 	@GetMapping("/openLoginPage")
 	public String openLoginPage() {
 		return "user_login";
@@ -65,7 +70,7 @@ public class LandlordController {
 
 				model.addAttribute("user", user);
 
-				return "tenant_dashboard";
+				return "landlord_dashboard";
 
 			} else {
 				attributes.addFlashAttribute("message", "Incorrect Password");
@@ -107,6 +112,16 @@ public class LandlordController {
 	@GetMapping("/openLandlordDashboard")
 	public String showDashboard() {
 		return "landlord_dashboard"; // JSP file name without extension
+	}
+
+	@GetMapping("/openReports")
+	public String openReports() {
+		return "view_reports"; // JSP file name without extension
+	}
+
+	@GetMapping("/logout")
+	public String logout() {
+		return "index"; // JSP file name without extension
 	}
 
 	// Additional mappings for other pages...
