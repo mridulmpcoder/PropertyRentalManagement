@@ -123,6 +123,26 @@ public class LandlordController {
 	public String logout() {
 		return "index"; // JSP file name without extension
 	}
+	
+	@GetMapping("/manager_dashboard")
+	public String managerdashboard() {
+		return "manager_dashboard"; // JSP file name without extension
+	}
+	@GetMapping("/payment_management")
+	public String paymentmanagement() {
+		return "payment_management"; // JSP file name without extension
+	}
+	
+	
+	@GetMapping("/maintenance_request")
+	public String maintenanceRequest() {
+		return "maintenance_request";
+	}
+	
+	@GetMapping("/payment_page")
+	public String paymentPage() {
+		return "payment_page";
+	}
 
 	// Additional mappings for other pages...
 }
