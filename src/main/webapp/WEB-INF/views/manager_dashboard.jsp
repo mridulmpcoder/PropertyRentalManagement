@@ -26,22 +26,26 @@
             <!-- Buttons for Manager Actions -->
             <div class="btn-card tenants">
                 <h3>Manage Tenants</h3>
-                <a href="#">Manage Tenants</a>
+                <a href="/manager/tenantManagement">Manage Tenants</a>
             </div>
 
             <div class="btn-card requests">
                 <h3>Manage Requests</h3>
+
                 <a href="/user/maintenance_request">Manage Requests</a>
+
+                <a href="/manager/managerMaintenance">Manage Requests</a>
+
             </div>
 
             <div class="btn-card payments">
                 <h3>Manage Payments</h3>
-                <a href="/user/payment_management">Manage Payments</a>
+                <a href="/landlord/paymentManagement">Manage Payments</a>
             </div>
 
             <div class="btn-card profile">
                 <h3>Profile & Settings</h3>
-                <a href="#">Profile</a>
+                <a href="/viewProfile">Profile</a>
             </div>
 
 
