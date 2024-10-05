@@ -15,10 +15,10 @@
 
         <div class="button-container">
             <a href="/user/openPropertyManagement" class="button">Manage Properties</a>
-            <a href="${pageContext.request.contextPath}/assign-managers" class="button">Assign Managers</a>
+            <a href="/user/assignManagers" class="button">Assign Managers</a>
             <a href="/user/openReports" class="button">View Reports</a>
-            <a href="${pageContext.request.contextPath}/manage-tenants" class="button">Manage Tenants</a>
-            <a href="${pageContext.request.contextPath}/maintenance-requests" class="button">View Maintenance Requests</a>
+            <a href="/user/tenantManagement" class="button">Manage Tenants</a>
+            <a href="/user/maintenanceRequests" class="button">View Maintenance Requests</a>
             <a href="${pageContext.request.contextPath}/rent-payment-overview" class="button">Rent Payment Overview</a>
             <a href="${pageContext.request.contextPath}/profile" class="button">Profile & Settings</a>
 			<a href="/user/logout">Logout</a>

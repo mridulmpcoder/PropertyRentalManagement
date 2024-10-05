@@ -26,7 +26,8 @@
     </table>
 	<a href="/user/manageTenants" class="button">
     <button class="btn-primary">Manage Tenants</button></a>
-    <button class="btn-secondary">Back to Dashboard</button>
+	<a href="/user/openLandlordDashboard" class="button">
+	<button class="btn-secondary">Back To Dashboard</button></a>
 </div>
  
 <!--<script>

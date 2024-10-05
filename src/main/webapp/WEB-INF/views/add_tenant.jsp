@@ -32,10 +32,11 @@
            <!-- <button type="button" onclick="window.location.href='manage_tenants.jsp'">
 				Back to Manage Tenants</button>-->
 			<a href="/user/manageTenants" class="button">
-			<button type="button">Manage Tenants</button></a>
+			<button type="button">Back To Manage Tenants</button></a>
 			
 			
         </form>
+		
     </main>
     <footer>
         <p>© 2024 Property Rental Management System</p>

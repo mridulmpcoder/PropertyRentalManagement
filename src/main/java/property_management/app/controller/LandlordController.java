@@ -2,7 +2,6 @@ package property_management.app.controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
-
 import javax.sql.rowset.serial.SerialException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -122,6 +121,50 @@ public class LandlordController {
 	@GetMapping("/logout")
 	public String logout() {
 		return "index"; // JSP file name without extension
+	}
+	
+	@GetMapping("/tenantManagement")
+	public String tenantManagement() {
+		return "tenant_management"; // JSP file name without extension
+	}
+	
+	@GetMapping("/manageTenants")
+	public String manageTenants() {
+		return "manage_tenants"; // JSP file name without extension
+	}
+	
+	@GetMapping("/addTenants")
+	public String addTenants() {
+		return "add_tenant"; // JSP file name without extension
+	}
+	
+	@GetMapping("/deleteTenants")
+	public String deleteTenants() {
+		return "delete_tenant"; // JSP file name without extension
+	}
+	
+
+	  @GetMapping("/assignManagers") 
+	  public String assignManagers() { 
+		  return  "manager_assignment";
+	  }
+	  // JSP file name without extension }
+	 
+
+	
+	@GetMapping("/maintenanceRequests")
+	public String maintenanceRequests() {
+		return "maintenance_requests"; // JSP file name without extension
+	}
+	
+	@GetMapping("/assignTechnician")
+	public String assignTechnician() {
+		return "assign_technician"; // JSP file name without extension
+	}
+	
+	@GetMapping("/addTechnician")
+	public String addTechnician() {
+		return "add_technician"; // JSP file name without extension
 	}
 
 	// Additional mappings for other pages...

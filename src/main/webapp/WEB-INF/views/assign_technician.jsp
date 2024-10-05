@@ -33,6 +33,8 @@
         </div>
  
         <div>
+			
+			
             <button type="submit">Assign Technician</button>
 			<a href="/user/maintenanceRequests" class="button">
 			<button type="button">Cancel</button></a>
@@ -41,10 +43,10 @@
 </div>
  
 <!--<script>
-    function backToRequests() {
-        window.location.href = 'maintenance_requests.jsp';  // Redirect back to Maintenance Requests page
+    function assignManager() {
+        var selectedManager = document.getElementById("manager-select").value;
+        alert("Manager " + selectedManager + " has been assigned successfully.");
     }
-</script>
- -->
+</script>-->
 </body>
 </html>

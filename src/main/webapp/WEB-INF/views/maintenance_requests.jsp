@@ -34,12 +34,14 @@
     
 </div>
 <a href="/user/assignTechnician" class="button">
-<button type="button">Assign Technician</button></a>
+<button class="btn-primary">Assign Technician</button></a>
 
 <a href="/user/addTechnician" class="button">
-<button type="button">Add Technician</button></a>
+<button class="btn-primary">Add Technician</button></a>
 
-<button onclick="redirectToDashboard()">Back to Dashboard</button>
+
+<a href="/user/openLandlordDashboard" class="button">
+<button class="btn-secondary">Back to DashBoard</button></a>
 
 <!-- 
 <script>

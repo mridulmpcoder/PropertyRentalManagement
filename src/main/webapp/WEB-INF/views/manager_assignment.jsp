@@ -18,17 +18,15 @@
         <option value="manager3">Manager 3</option>
     </select>
     <button class="btn-primary" onclick="assignManager()">Assign</button>
-    <button class="btn-secondary" onclick="redirectToDashboard()">Back to Dashboard</button>
+   
+	<a href="/user/openLandlordDashboard" class="button">
+	<button class="btn-secondary">Back to DashBoard</button></a>
 </div>
  
 <script>
     function assignManager() {
         var selectedManager = document.getElementById("manager-select").value;
         alert("Manager " + selectedManager + " has been assigned successfully.");
-    }
- 
-    function redirectToDashboard() {
-        window.location.href = 'landlord_dashboard.jsp';
     }
 </script>
  
