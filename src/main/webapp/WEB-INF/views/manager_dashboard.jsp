@@ -31,7 +31,7 @@
 
             <div class="btn-card requests">
                 <h3>Manage Requests</h3>
-                <a href="#">Manage Requests</a>
+                <a href="/user/maintenance_request">Manage Requests</a>
             </div>
 
             <div class="btn-card payments">
