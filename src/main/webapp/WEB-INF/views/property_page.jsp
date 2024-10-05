@@ -25,7 +25,7 @@
             <ul class="nav-links">
                 <li><a href="/TenantHomePage">Home</a></li>
                 <li><a href="/properties">Properties</a></li>
-                <li><a href="/user/AboutUs">About Us</a></li>
+                <li><a href="/aboutUs">About Us</a></li>
                 <li><a href="/contact">Contact</a></li>
                 <li><a href="/user/openLoginPage" class="login-btn">Login</a></li>
             </ul>

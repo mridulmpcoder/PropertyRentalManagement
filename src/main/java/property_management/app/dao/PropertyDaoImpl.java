@@ -77,4 +77,13 @@ public class PropertyDaoImpl {
 		String sql = "SELECT DISTINCT Facilities FROM Property";
 		return jdbcTemplate.queryForList(sql, String.class);
 	}
+	
+	public List<Property> getLatestProperties()
+	{
+		String sql = "SELECT p.*,pt.TypeName AS type FROM Property p "
+					+ "JOIN PropertyType pt ON p.PropertyTypeID = pt.PropertyTypeID "
+					+ "ORDER BY p.CreatedAt DESC LIMIT 5";
+		
+		return jdbcTemplate.query(sql, new PropertyRowMapper());
+	}
 }
