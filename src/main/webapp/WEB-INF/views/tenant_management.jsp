@@ -29,19 +29,6 @@
     <button class="btn-secondary">Back to Dashboard</button>
 </div>
  
-<!--<script>
-    function viewTenantProfile() {
-        window.location.href = 'tenant_profile.jsp'; // Redirect to tenant profile
-    }
- 
-    function manageTenants() {
-        window.location.href = 'manage_tenants.jsp'; // Open Manage Tenants Page
-    }
- 
-    function redirectToDashboard() {
-        window.location.href = 'manager_dashboard.jsp';
-    }
-</script>-->
  
 </body>
 </html>
