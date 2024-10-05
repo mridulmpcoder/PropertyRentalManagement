@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.web.multipart.MultipartFile;
 
+import property_management.app.entities.Role;
 import property_management.app.entities.User;
 import property_management.utility.ByteArrayMultipartFile;
 
@@ -26,6 +27,11 @@ public class UserRowMapper implements RowMapper<User> {
 		user.setUsername(rs.getString("username"));
 		user.setPasswordSalt(rs.getString("passwordSalt"));
 		user.setPasswordHash(rs.getString("passwordHash"));
+		user.setStatus(rs.getString("status"));
+
+		Role role = new Role();
+		role.setRoleId(rs.getInt("role_id"));
+		user.setRole(role);
 
 		Blob profileImageBlob = rs.getBlob("profile_image");
 
@@ -36,7 +42,6 @@ public class UserRowMapper implements RowMapper<User> {
 		user.setProfileImage(profileImage);
 
 		return user;
-
 	}
 
 }

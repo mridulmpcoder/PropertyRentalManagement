@@ -20,7 +20,7 @@
             <a href="${pageContext.request.contextPath}/manage-tenants" class="button">Manage Tenants</a>
             <a href="${pageContext.request.contextPath}/maintenance-requests" class="button">View Maintenance Requests</a>
             <a href="${pageContext.request.contextPath}/rent-payment-overview" class="button">Rent Payment Overview</a>
-            <a href="${pageContext.request.contextPath}/profile" class="button">Profile & Settings</a>
+            <a href="/user/viewProfile" class="button">Profile & Settings</a>
 			<a href="/user/logout">Logout</a>
         </div>
     </div>

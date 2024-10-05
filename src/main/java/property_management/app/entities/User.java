@@ -16,28 +16,25 @@ public class User {
 	private String password;
 	private String passwordSalt;
 	private String passwordHash;
+	private Role role;
+	private String status;
 	private MultipartFile profileImage;
 
 	public User() {
 		super();
 	}
 
-	public User(int userId, String firstName, String lastName, String emailId, String mobileNo, Date dateOfBirth,
-			String username, String passwordSalt, String passwordHash) {
+	public User(int userId, String firstName, String lastName, String emailId, String mobileNo) {
 		super();
 		this.userId = userId;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.emailId = emailId;
 		this.mobileNo = mobileNo;
-		this.dateOfBirth = dateOfBirth;
-		this.username = username;
-		this.passwordSalt = passwordSalt;
-		this.passwordHash = passwordHash;
 	}
 
 	public User(String firstName, String lastName, String emailId, String mobileNo, Date dateOfBirth, String username,
-			String passwordSalt, String passwordHash) {
+			String password, Role role, MultipartFile profileImage) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -45,13 +42,14 @@ public class User {
 		this.mobileNo = mobileNo;
 		this.dateOfBirth = dateOfBirth;
 		this.username = username;
-		this.passwordSalt = passwordSalt;
-		this.passwordHash = passwordHash;
-		//this.profileImage = profileImage;
+		this.password = password;
+		this.role = role;
+		this.profileImage = profileImage;
 	}
 
 	public User(int userId, String firstName, String lastName, String emailId, String mobileNo, Date dateOfBirth,
-			String username, String password, String passwordSalt, String passwordHash, MultipartFile profileImage) {
+			String username, String password, String passwordSalt, String passwordHash, Role role, String status,
+			MultipartFile profileImage) {
 		super();
 		this.userId = userId;
 		this.firstName = firstName;
@@ -63,6 +61,16 @@ public class User {
 		this.password = password;
 		this.passwordSalt = passwordSalt;
 		this.passwordHash = passwordHash;
+		this.role = role;
+		this.status = status;
+		this.profileImage = profileImage;
+	}
+
+	public MultipartFile getProfileImage() {
+		return profileImage;
+	}
+
+	public void setProfileImage(MultipartFile profileImage) {
 		this.profileImage = profileImage;
 	}
 
@@ -146,20 +154,28 @@ public class User {
 		this.passwordHash = passwordHash;
 	}
 
-	public MultipartFile getProfileImage() {
-		return profileImage;
+	public Role getRole() {
+		return role;
 	}
 
-	public void setProfileImage(MultipartFile profileImage) {
-		this.profileImage = profileImage;
+	public void setRole(Role role) {
+		this.role = role;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	@Override
 	public String toString() {
-		return "User [userId=" + userId + ", firstName=" + firstName + ", lastName=" + lastName + ", emailId=" + emailId
-				+ ", mobileNo=" + mobileNo + ", dateOfBirth=" + dateOfBirth + ", username=" + username + ", password="
-				+ password + ", passwordSalt=" + passwordSalt + ", passwordHash=" + passwordHash + ", profileImage="
-				+ profileImage + "]";
+		return "\n User [userId=" + userId + ", firstName=" + firstName + ", lastName=" + lastName + ", emailId="
+				+ emailId + ", mobileNo=" + mobileNo + ", dateOfBirth=" + dateOfBirth + ", username=" + username
+				+ ", password=" + password + ", passwordSalt=" + passwordSalt + ", passwordHash=" + passwordHash
+				+ ", role=" + role + ", status=" + status + "]";
 	}
 
 }
