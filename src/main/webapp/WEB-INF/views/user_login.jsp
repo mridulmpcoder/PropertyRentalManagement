@@ -14,7 +14,9 @@
 		<input type="text" name="username" placeholder="Enter username" /><br /> 
 		<input type="password" name="password" placeholder="Enter password" /><br />
 		<input type="submit" value="Submit" />
-		<p>Not Registered? Click <a href = "/user/openRegistrationPage">here</a> to register</p>
+		<p>Not Registered? </p>
+		<p>Click <a href = "/user/openTenantRegistrationPage">here</a> to register as Tenant</p>
+		<p>Click <a href = "/user/openManagerRegistrationPage">here</a> to register as Manager</p>
 	</form>
 	
 	
