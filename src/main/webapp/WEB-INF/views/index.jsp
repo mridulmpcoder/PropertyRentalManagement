@@ -48,7 +48,7 @@
             <h1>Property: 401 Biscayne Boulevard</h1>
             <h2>$1050/Month - For Rent</h2>
             <p>Size: 3500 Sq Ft, 3 Beds, 3.5 Baths, 2 Garages</p>
-            <a href="property-details.jsp" class="btn">Learn More</a>
+            <a href="/user/manager_dashboard" class="btn">Learn More</a>
         </div>
     </section>
 

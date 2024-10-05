@@ -1,0 +1,134 @@
+/* Global Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    width: 220px;
+    background-color: #343a40;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding-top: 20px;
+    color: white;
+}
+
+.sidebar a {
+    display: block;
+    padding: 15px 20px;
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    margin-bottom: 10px;
+	
+}
+
+.sidebar a:hover {
+    background-color: #495057;
+	border-radius: 17px;
+}
+
+/* Header Styles */
+.header {
+    background-color: #343a40;
+    color: white;
+    padding: 15px;
+    padding-left: 250px;
+    text-align: right;
+    position: relative;
+}
+
+.header h1 {
+    margin: 0;
+    position: absolute;
+    left: 20px; /* Adjusted to move the header to the left side */
+    top: 15px;
+    text-align: left;
+	font-size: 30px;
+}
+
+
+.header a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    background-color: #007bff;
+    border-radius: 5px;
+}
+
+.header a.logout {
+    background-color: #dc3545;
+}
+
+/* Dashboard Container */
+.dashboard-container {
+    margin-left: 250px;
+    padding: 20px;
+}
+
+/* Button Styles */
+.btn-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.btn-card {
+    background-color: white;
+    padding: 20px;
+    width: 200px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    position: relative;
+}
+
+.btn-card h3 {
+    margin-top: 0;
+    color: #343a40;
+}
+
+.btn-card a {
+    text-decoration: none;
+    color: white;
+    padding: 10px 20px;
+    background-color: #007bff;
+    border-radius: 5px;
+    display: inline-block;
+    margin-top: 10px;
+}
+
+.btn-card a:hover {
+    background-color: #0056b3;
+}
+
+/* Colors for specific cards */
+.btn-card.tenants {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-card.requests {
+    background-color: #ffc107;
+    color: white;
+}
+
+.btn-card.payments {
+    background-color: #17a2b8;
+    color: white;
+}
+
+.btn-card.profile {
+    background-color: #6c757d;
+    color: white;
+}
+
+.btn-card.logout {
+    background-color: #dc3545;
+    color: white;
+}
