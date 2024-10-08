@@ -46,14 +46,14 @@
             <div class="dashboard-card">
                 <h2>Payments & Invoices</h2>
                 <p>Make rental payments and review invoices.</p>
-                <a href="/user/paymentPage" class="btn-primary">Make Payment</a>
+                <a href="/tenant/paymentPage" class="btn-primary">Make Payment</a>
             </div>
  
             <!-- Maintenance Requests Card -->
             <div class="dashboard-card">
                 <h2>Request Maintenance</h2>
                 <p>Submit a request for maintenance or repairs.</p>
-                <a href="/user/maintenanceRequest" class="btn-primary">Request Maintenance</a>
+                <a href="/tenant/maintenanceRequest" class="btn-primary">Request Maintenance</a>
             </div>
  
             <!-- Profile & Settings Card -->

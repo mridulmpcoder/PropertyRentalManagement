@@ -34,15 +34,8 @@ public class LandlordController {
 		return "payment_management"; // JSP file name without extension
 	}
 
-	@GetMapping("/maintenanceRequest")
-	public String maintenanceRequest() {
-		return "maintenance_request";
-	}
 
-	@GetMapping("/paymentPage")
-	public String paymentPage() {
-		return "payment_page";
-	}
+	
 
 	@GetMapping("/managerAssingment")
 	public String managerAssingment() {
