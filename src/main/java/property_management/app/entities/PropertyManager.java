@@ -1,52 +1,32 @@
 package property_management.app.entities;
 
-public class PropertyManager {
-	
-	    private int managerId;
-	    private String managerName;
-	    private String managerEmail;
-	    private String managerPhone;
-	 
-	    // Constructor
-	    public PropertyManager(int managerId, String managerName, String managerEmail, String managerPhone) {
-	        this.managerId = managerId;
-	        this.managerName = managerName;
-	        this.managerEmail = managerEmail;
-	        this.managerPhone = managerPhone;
-	    }
-	 
-	    // Getters and Setters
-	    public int getManagerId() {
-	        return managerId;
-	    }
-	 
-	    public void setManagerId(int managerId) {
-	        this.managerId = managerId;
-	    }
-	 
-	    public String getManagerName() {
-	        return managerName;
-	    }
-	 
-	    public void setManagerName(String managerName) {
-	        this.managerName = managerName;
-	    }
-	 
-	    public String getManagerEmail() {
-	        return managerEmail;
-	    }
-	 
-	    public void setManagerEmail(String managerEmail) {
-	        this.managerEmail = managerEmail;
-	    }
-	 
-	    public String getManagerPhone() {
-	        return managerPhone;
-	    }
-	 
-	    public void setManagerPhone(String managerPhone) {
-	        this.managerPhone = managerPhone;
-	    }
-	}
-	 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
+
+@Entity
+@Table(name = "property_manager") // Adjusted to match your table name
+public class PropertyManager {
+    @Id
+    private String id; // This should match the primary key in your table
+
+    private String name; // This should match the name column in your table
+
+    // Getters and Setters
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+}

@@ -91,6 +91,7 @@ public class UserDaoImpl implements UserDao {
 		String sql = "SELECT * FROM user WHERE user_id = ?";
 		return jdbcTemplate.queryForObject(sql, new UserRowMapper(), userId);
 	}
+
 	
 	
 }

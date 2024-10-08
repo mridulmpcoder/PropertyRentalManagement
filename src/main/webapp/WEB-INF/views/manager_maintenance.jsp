@@ -33,10 +33,10 @@
  
     
 </div>
-<a href="/user/assignTechnician" class="button">
+<a href="assignTechnician" class="button">
 <button class="btn-primary">Assign Technician</button></a>
 
-<a href="/user/addTechnician" class="button">
+<a href="addTechnician" class="button">
 <button class="btn-primary">Add Technician</button></a>
 
 

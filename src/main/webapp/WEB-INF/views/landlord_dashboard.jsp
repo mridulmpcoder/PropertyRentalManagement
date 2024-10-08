@@ -16,17 +16,16 @@
         <div class="button-container">
 
             <a href="/user/openPropertyManagement" class="button">Manage Properties</a>
-            <a href="/user/assignManagers" class="button">Assign Managers</a>
+			<a href="/landlord/managerAssingment" class="button">Assign Managers</a>
+			<a href="/landlord/tenantManagement" class="button">Tenant Management</a>
             <a href="/user/openReports" class="button">View Reports</a>
-            <a href="/user/tenantManagement" class="button">Manage Tenants</a>
             <a href="/user/maintenanceRequests" class="button">View Maintenance Requests</a>
             <a href="${pageContext.request.contextPath}/rent-payment-overview" class="button">Rent Payment Overview</a>
             <a href="${pageContext.request.contextPath}/profile" class="button">Profile & Settings</a>
             <a href="/landlord/openPropertyManagement" class="button">Manage Properties</a>
-            <a href="/landlord/managerAssingment" class="button">Assign Managers</a>
             <a href="/landlord/openReports" class="button">View Reports</a>
-            <a href="/landlord/manageTenants" class="button">Manage Tenants</a>
-            <a href="/landlord/managerMaintenance" class="button">View Maintenance Requests</a>
+			
+            <a href="/landlord/managerMaintenance" class="button">Manage Maintenance Requests</a>
             <a href="/landlord/paymentManagement" class="button">Rent Payment Overview</a>
             <a href="/user/viewProfile" class="button">Profile & Settings</a>
 			<a href="/user/logout">Logout</a>

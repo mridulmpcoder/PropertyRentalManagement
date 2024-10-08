@@ -1,37 +1,32 @@
 package property_management.app.dao;
- 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Repository;
-import property_management.app.entities.PropertyManager;
- 
+
+
+import property_management.app.model.Manager;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
- 
-@Repository
+
 public class ManagerDaoImpl implements ManagerDao {
- 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
- 
-    @Override
-    public List<PropertyManager> getAllManagers() {
-        String sql = "SELECT * FROM managers";
-        return jdbcTemplate.query(sql, (rs, rowNum) ->
-                new PropertyManager(
-                        rs.getInt("manager_id"),
-                        rs.getString("manager_name"),
-                        rs.getString("manager_email"),
-                        rs.getString("manager_phone")
-                ));
+    // Database connection setup (use your own connection details)
+    private static final String URL = "jdbc:mysql://localhost:3306/your_database";
+    private static final String USER = "your_username";
+    private static final String PASSWORD = "your_password";
+
+    public List<Manager> getAllManagers() throws SQLException {
+        List<Manager> managers = new ArrayList<>();
+        String query = "SELECT id, name FROM managers"; // Adjust based on your DB structure
+
+        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
+
+            while (resultSet.next()) {
+                Manager manager = new Manager();
+                manager.setId(resultSet.getInt("id"));
+                manager.setName(resultSet.getString("name"));
+                managers.add(manager);
+            }
+        }
+        return managers;
     }
- 
-    @Override
-    public void assignManagerToProperty(int propertyId, int managerId) {
-        String sql = "UPDATE property SET manager_id = ? WHERE property_id = ?";
-        jdbcTemplate.update(sql, managerId, propertyId);
-    }
-   
-     
-  
 }
- 
