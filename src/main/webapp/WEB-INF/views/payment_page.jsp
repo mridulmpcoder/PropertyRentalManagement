@@ -73,25 +73,14 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- This is static data for illustration. Replace with dynamic data as per your database -->
-                <tr>
-                    <td>01/09/2024</td>
-                    <td>$1200</td>
-                    <td>PayPal</td>
-                    <td>Paid</td>
-                </tr>
-                <tr>
-                    <td>01/08/2024</td>
-                    <td>$1200</td>
-                    <td>Stripe</td>
-                    <td>Paid</td>
-                </tr>
-                <tr>
-                    <td>01/07/2024</td>
-                    <td>$1200</td>
-                    <td>Credit Card</td>
-                    <td>Paid</td>
-                </tr>
+                <c:forEach var="payment" items="${payments}">
+                    <tr>
+                        <td>${payment.paymentDate}</td>
+                        <td>${payment.amount}</td>
+                        <td>${payment.paymentMethod}</td>
+                        <td>${payment.status}</td>
+                    </tr>
+                </c:forEach>
             </tbody>
         </table>
 

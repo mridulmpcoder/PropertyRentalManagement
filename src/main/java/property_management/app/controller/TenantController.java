@@ -12,5 +12,14 @@ public class TenantController {
 	public String tenantDashboard() {
 		return "tenant_dashboard";
 	}
+	@GetMapping("/maintenanceRequest")
+	public String maintenanceRequest() {
+		return "maintenance_request";
+	}
+	
+	@GetMapping("/paymentPage")
+	public String paymentPage() {
+		return "payment_page";
+	}
 
 }
