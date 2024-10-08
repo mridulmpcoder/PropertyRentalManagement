@@ -23,7 +23,7 @@
         <div class="navbar-container">
             <a href="#" class="logo">Property Management</a>
             <ul class="nav-links">
-                <li><a href="/TenantHomePage">Home</a></li>
+                <li><a href="/">Home</a></li>
                 <li><a href="/properties">Properties</a></li>
                 <li><a href="/aboutUs">About Us</a></li>
                 <li><a href="/contact">Contact</a></li>

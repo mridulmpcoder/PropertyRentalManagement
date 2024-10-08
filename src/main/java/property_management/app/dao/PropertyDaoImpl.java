@@ -1,16 +1,25 @@
 package property_management.app.dao;
 
 import property_management.app.entities.Property;
+import property_management.app.entities.User;
+
 import org.springframework.stereotype.Repository;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.io.IOException;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.sql.rowset.serial.SerialBlob;
+import javax.sql.rowset.serial.SerialException;
+
 @Repository
-public class PropertyDaoImpl {
+public class PropertyDaoImpl implements PropertyDao{
 
 	private final JdbcTemplate jdbcTemplate;
 
@@ -85,5 +94,24 @@ public class PropertyDaoImpl {
 					+ "ORDER BY p.CreatedAt DESC LIMIT 5";
 		
 		return jdbcTemplate.query(sql, new PropertyRowMapper());
+	}
+
+	@Override
+	public int insertUser(Property property) throws IOException, SerialException, SQLException {
+		Blob profileImage = getBlob(property.getpropertyImage());
+
+		String query = "INSERT INTO property " + "(`title`, `description`, `location`, `type`, "
+				+ "`price`, `swimmingPool`, `gym`, `parking`, "
+				+ "`garden`, `airConditioning`, `elevator`, `securitySystem`, `internet`, `furnished`, `propertyImage`) " + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+		return jdbcTemplate.update(query, property.getTitle(), property.getDescription(), property.getLocation(),
+				property.getType(), property.getPrice(), property.isSwimmingPool(), property.isGym(),
+				property.isParking(), property.isGarden(), property.isAirConditioning(), property.isElevator(), property.isSecuritySystem(), property.isInternet(), property.isFurnished() , profileImage);
+	}
+	
+	private Blob getBlob(MultipartFile image) throws IOException, SerialException, SQLException {
+		byte[] byteArr = image.getBytes();
+		Blob imageBlob = new SerialBlob(byteArr);
+		return imageBlob;
 	}
 }
