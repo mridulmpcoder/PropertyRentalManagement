@@ -172,6 +172,7 @@ public class LandlordController {
 	    		@RequestParam("lastName")String lastName,
 	    		@RequestParam("email") String email, 
 	    		@RequestParam("Contact") String Contact) {
+		
 		    Tenant tenant = new Tenant();
 		    tenant.setFirstName(firstName);
 		    tenant.setLastName(lastName);
