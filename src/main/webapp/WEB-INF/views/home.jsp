@@ -1,3 +1,4 @@
+<%@page import="org.springframework.web.multipart.MultipartFile"%>
 <%@page import="property_management.app.entities.Property"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
@@ -121,16 +122,16 @@
 		        <div class="cards">
 	                <!-- Fetch properties dynamically from backend -->
 	                <%
-	                    List<Property> latestProperties = (List<Property>) request.getAttribute("latestProperties");
-	                    if (latestProperties != null && !latestProperties.isEmpty()) {
-	                        for (Property property : latestProperties) {
-	                            byte[] imageBlob = property.getImageBlob(); // Get the image blob
+	                List<Property> latestProperties = (List<Property>) request.getAttribute("latestProperties");
+	                	                    if (latestProperties != null && !latestProperties.isEmpty()) {
+	                	                        for (Property property : latestProperties) {
+	                	                            MultipartFile imageBlob = property.getpropertyImage(); // Get the image blob
 	                %>
 	                    <div class="card">
 	                        <%
 	                            if (imageBlob != null) {
 	                        %>
-	                            <img src="data:image/jpeg;base64,<%= java.util.Base64.getEncoder().encodeToString(imageBlob) %>" alt="Property Image">
+	                          <%--   <img src="data:image/jpeg;base64,<%= java.util.Base64.getEncoder().encodeToString(imageBlob) %>" alt="Property Image"> --%>
 	                        <%
 	                            } else { // Fallback to a default image if no image is available
 	                        %>
