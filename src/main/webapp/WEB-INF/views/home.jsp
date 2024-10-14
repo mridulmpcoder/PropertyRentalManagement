@@ -102,7 +102,7 @@
     </nav>
  
     <!-- Banner Section with Poster -->
-    <section class="banner" style="background-image: url('/images/empty-room-modern-interior-design-wall-web-banner-with-copy-space-generative-ai-free-photo.jpg');">
+    <section class="banner" style="background-image: url('https://images5.alphacoders.com/647/thumb-1920-647570.jpg');">
         <div class="banner-content">
             <h1>Find Your Dream Property</h1>
             <p>Search from a wide range of properties that suit your preferences and budget.</p>
