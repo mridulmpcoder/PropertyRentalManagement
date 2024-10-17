@@ -1,5 +1,7 @@
 package property_management.app.entities;
 
-public class PropertyManager {
+import java.sql.Date;
+
+public class Payment {
 
 }

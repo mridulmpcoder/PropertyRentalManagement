@@ -2,8 +2,6 @@ package property_management.app.entities;
 
 import java.util.Base64;
 
-import org.springframework.web.multipart.MultipartFile;
-
 public class Property {
 	private int propertyId; // Renamed for consistency
 	private String title;
@@ -11,7 +9,7 @@ public class Property {
 	private String location;
 	private String type; // Consider clarifying this if necessary
 	private Double price; // Changed to BigDecimal for financial precision
-	private MultipartFile propertyImage; // Binary data for image
+	private byte[] propertyImage; // Binary data for image
 
 	// Facilities represented as separate boolean fields for better control
 	private boolean swimmingPool;
@@ -30,7 +28,7 @@ public class Property {
 
 	// Parameterized constructor for easy instantiation
 	public Property(int propertyId, String title, String description, String location, String type, Double price,
-			MultipartFile propertyImage) {
+			byte[] propertyImage) {
 		this.propertyId = propertyId;
 		this.title = title;
 		this.description = description;
@@ -39,12 +37,10 @@ public class Property {
 		this.price = price;
 		this.propertyImage = propertyImage;
 	}
-	
-	
 
-	public Property(String title, String description, String location, String type, Double price,
-			MultipartFile propertyImage, boolean swimmingPool, boolean gym, boolean parking, boolean garden,
-			boolean airConditioning, boolean elevator, boolean securitySystem, boolean internet, boolean furnished) {
+	public Property(String title, String description, String location, String type, Double price, byte[] propertyImage,
+			boolean swimmingPool, boolean gym, boolean parking, boolean garden, boolean airConditioning,
+			boolean elevator, boolean securitySystem, boolean internet, boolean furnished) {
 		super();
 		this.title = title;
 		this.description = description;
@@ -113,11 +109,11 @@ public class Property {
 		this.price = price;
 	}
 
-	public MultipartFile getpropertyImage() {
+	public byte[] getpropertyImage() {
 		return propertyImage;
 	}
 
-	public void setpropertyImage(MultipartFile propertyImage) {
+	public void setpropertyImage(byte[] propertyImage) {
 		this.propertyImage = propertyImage;
 	}
 
@@ -193,21 +189,11 @@ public class Property {
 		this.furnished = furnished;
 	}
 
-	/*
-	 * public String getImageAsBase64() { if (propertyImage != null &&
-	 * propertyImage.length > 0) { return
-	 * Base64.getEncoder().encodeToString(propertyImage); } return ""; // Return an
-	 * empty string if there's no image }
-	 */
-
-	@Override
-	public String toString() {
-		return "Property{" + "propertyId=" + propertyId + ", title='" + title + '\'' + ", description='" + description
-				+ '\'' + ", location='" + location + '\'' + ", type='" + type + '\'' + ", price=" + price
-				+ ", swimmingPool=" + swimmingPool + ", gym=" + gym + ", parking=" + parking + ", garden=" + garden
-				+ ", airConditioning=" + airConditioning + ", elevator=" + elevator + ", securitySystem="
-				+ securitySystem + ", internet=" + internet + ", furnished=" + furnished + '}';
+	public String getImageAsBase64() {
+		if (propertyImage != null && propertyImage.length > 0) {
+			return Base64.getEncoder().encodeToString(propertyImage);
+		}
+		return ""; // Return an empty string if there's no image
 	}
 
-	// Override equals and hashCode as needed for collection handling
 }

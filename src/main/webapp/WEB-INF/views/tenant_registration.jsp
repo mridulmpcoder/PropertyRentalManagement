@@ -21,8 +21,12 @@
 			<input type="date" name="dateOfBirth" /><br /> 
 			<input type="text" name="username" placeholder="Enter username" /><br /> 
 			<input type="password" name="password" placeholder="Enter password" /><br />
-
-			<input type="file" name="profileImage" accept=".jpg, .jpeg, .png, .pdf" required>
+			
+			
+			<input type="file" name="profileImage" accept=".jpg, .jpeg, .png, .pdf"  required>
+			
+			
+			<input type="file" name="idProof" accept=".jpg, .jpeg, .png, .pdf" required>
 
 
 			<input type="submit" value="Submit" />

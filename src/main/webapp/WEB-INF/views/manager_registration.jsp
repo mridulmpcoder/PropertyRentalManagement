@@ -23,6 +23,8 @@
 			<input type="password" name="password" placeholder="Enter password" /><br />
 
 			<input type="file" name="profileImage" accept=".jpg, .jpeg, .png, .pdf" required>
+			
+			<input type="file" name="idProof" accept=".jpg, .jpeg, .png, .pdf" required>
 
 
 			<input type="submit" value="Submit" />

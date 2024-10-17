@@ -19,22 +19,14 @@ public class User {
 	private Role role;
 	private String status;
 	private MultipartFile profileImage;
+	private MultipartFile idProof;
 
 	public User() {
 		super();
 	}
 
-	public User(int userId, String firstName, String lastName, String emailId, String mobileNo) {
-		super();
-		this.userId = userId;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.emailId = emailId;
-		this.mobileNo = mobileNo;
-	}
-
 	public User(String firstName, String lastName, String emailId, String mobileNo, Date dateOfBirth, String username,
-			String password, Role role, MultipartFile profileImage) {
+			String status, MultipartFile profileImage, MultipartFile idProof) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -42,9 +34,9 @@ public class User {
 		this.mobileNo = mobileNo;
 		this.dateOfBirth = dateOfBirth;
 		this.username = username;
-		this.password = password;
-		this.role = role;
+		this.status = status;
 		this.profileImage = profileImage;
+		this.idProof = idProof;
 	}
 
 	public User(int userId, String firstName, String lastName, String emailId, String mobileNo, Date dateOfBirth,
@@ -63,14 +55,6 @@ public class User {
 		this.passwordHash = passwordHash;
 		this.role = role;
 		this.status = status;
-		this.profileImage = profileImage;
-	}
-
-	public MultipartFile getProfileImage() {
-		return profileImage;
-	}
-
-	public void setProfileImage(MultipartFile profileImage) {
 		this.profileImage = profileImage;
 	}
 
@@ -170,12 +154,22 @@ public class User {
 		this.status = status;
 	}
 
-	@Override
-	public String toString() {
-		return "\n User [userId=" + userId + ", firstName=" + firstName + ", lastName=" + lastName + ", emailId="
-				+ emailId + ", mobileNo=" + mobileNo + ", dateOfBirth=" + dateOfBirth + ", username=" + username
-				+ ", password=" + password + ", passwordSalt=" + passwordSalt + ", passwordHash=" + passwordHash
-				+ ", role=" + role + ", status=" + status + "]";
+	public MultipartFile getProfileImage() {
+		return profileImage;
 	}
+
+	public void setProfileImage(MultipartFile profileImage) {
+		this.profileImage = profileImage;
+	}
+
+	public MultipartFile getIdProof() {
+		return idProof;
+	}
+
+	public void setIdProof(MultipartFile idProof) {
+		this.idProof = idProof;
+	}
+	
+	
 
 }

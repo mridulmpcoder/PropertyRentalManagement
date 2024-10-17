@@ -13,44 +13,49 @@
 <body>
 
 
-	<form action="/property/addProperty" method="post"
-		enctype="multipart/form-data">
+	 <h1>Add New Property</h1>
+    <form action="addProperty" method="post" enctype="multipart/form-data">
+        <label>Title:</label>
+        <input type="text" name="title" required/><br/>
+        
+        <label>Description:</label>
+        <textarea name="description" required></textarea><br/>
+        
+        <label>Location:</label>
+        <input type="text" name="location" required/><br/>
+        
+       <!--  <label>Type:</label>
+        <select name="type" required>
+            <option value="Society">Society</option>
+            <option value="Villas">Villas</option>
+            <option value="Shop">Shop</option>
+            <option value="Independent House">Independent House</option>
+        </select><br/> -->
 
-		<input type="text" name="title" placeholder="Enter Title of Property" /><br />
-		<input type="text" name="description" placeholder="Enter Description" /><br />
-		<input type="text" name="location" placeholder="Enter Location" /><br />
-		<input type="text" name="type" placeholder="Property Type" /><br />
-		<input type="text" name="price" placeholder="Price" /><br /> 
-		<input type="file" name="propertyImage" accept=".jpg, .jpeg, .png, .pdf" multiple required /> 
-		
-		<label for="swimmingPool">Swimming Pool:</label>
-        <input type="checkbox" name="swimmingPool" value="true" />
+        <label>Status:</label>
+        <select name="status" required>
+            <option value="Vacant">Vacant</option>
+            <option value="Occupied">Occupied</option>
+            <option value="Under Maintenance">Under Maintenance</option>
+        </select><br/>
         
-        <label for="gym">Gym:</label>
-        <input type="checkbox" name="gym" value="true" />
+        <label>Amenities:</label><br/>
+        <input type="checkbox" name="swimmingPool"/> Swimming Pool<br/>
+        <input type="checkbox" name="gym"/> Gym<br/>
+        <input type="checkbox" name="garden"/> Garden<br/>
+        <input type="checkbox" name="parking"/> Parking<br/>
+        <input type="checkbox" name="airConditioning"/> Air Conditioning<br/>
+        <input type="checkbox" name="elevator"/> Elevator<br/>
+        <input type="checkbox" name="securitySystem"/> Security System<br/>
+        <input type="checkbox" name="internet"/> Internet<br/>
+        <input type="checkbox" name="furnished"/> Furnished<br/>
         
-        <label for="parking">Parking:</label>
-        <input type="checkbox" name="parking" value="true" />		
-		
-		<label for="garden">Garden:</label>
-        <input type="checkbox" name="garden" value="true" />
-		
-		<label for="airConditioning">Air Conditioning:</label>    
-        <input type="checkbox" name="airConditioning" value="true" />
+        <label>Price:</label>
+        <input type="text" name="price" required/><br/>
         
-        <label for="elevator">Elevator:</label>
-        <input type="checkbox" name="elevator" value="true" />
+        <input type="file" name="profileImage" accept=".jpg, .jpeg, .png, .pdf" required>
         
-        <label for="securitySystem">Security System:</label>
-        <input type="checkbox" name="securitySystem" value="true" />
-        
-        <label for="internet">Internet:</label>
-        <input type="checkbox" name="internet" value="true" />
-		
-		<label for="furnished">Furnished:</label>
-        <input type="checkbox" name="furnished" value="true" />
-        
-		<input type="submit" value="Submit" />
+        <input type="submit" value="Add Property"/>
 
 		<%@include file="./message.jsp"%>
 	</form>
