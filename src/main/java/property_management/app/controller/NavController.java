@@ -5,12 +5,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/")
 public class NavController {
 
 	@GetMapping("/")
 	public String showHomePage() {
-		return "home"; // JSP file name without extension
+		return "user_login"; // JSP file name without extension
 	}
 
 	@GetMapping("/aboutUs")

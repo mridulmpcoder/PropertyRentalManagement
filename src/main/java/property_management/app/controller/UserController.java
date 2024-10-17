@@ -1,10 +1,8 @@
 package property_management.app.controller;
 
 import java.io.IOException;
-import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.Base64;
-import java.util.List;
 
 import javax.sql.rowset.serial.SerialException;
 
@@ -17,10 +15,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import property_management.app.dao.UserDaoImpl;
+import jakarta.servlet.http.HttpSession;
+import property_management.app.dao.UserDao;
 import property_management.app.entities.Role;
 import property_management.app.entities.User;
 import property_management.utility.Password;
@@ -32,7 +31,8 @@ public class UserController {
 	private User user;
 
 	@Autowired
-	UserDaoImpl userDaoImpl;
+	UserDao userDao;
+	
 
 	@GetMapping("/openLoginPage")
 	public String openLoginPage() {
@@ -40,37 +40,25 @@ public class UserController {
 	}
 
 	@GetMapping("/openManagerRegistrationPage")
-	public ModelAndView openManagerRegistrationPage(ModelAndView modelAndView) {
+	public String openManagerRegistrationPage() {
 
-		/*
-		 * List<Role> listOfRoles = userDaoImpl.fetchAllRoles();
-		 * 
-		 * modelAndView.addObject("listOfRoles", listOfRoles);
-		 */
-		modelAndView.setViewName("manager_registration");
-
-		return modelAndView;
+		return "manager_registration";
 	}
 
 	@GetMapping("/openTenantRegistrationPage")
-	public ModelAndView openTenantRegistrationPage(ModelAndView modelAndView) {
+	public String openTenantRegistrationPage() {
 
-		List<Role> listOfRoles = userDaoImpl.fetchAllRoles();
-
-		modelAndView.addObject("listOfRoles", listOfRoles);
-		modelAndView.setViewName("tenant_registration");
-
-		return modelAndView;
+		return "tenant_registration";
 	}
 
 	@PostMapping("/login")
-	public String login(@RequestParam String username, @RequestParam String password, Model model,
+	public String login(@RequestParam String username, @RequestParam String password, HttpSession session, Model model,
 			RedirectAttributes attributes) {
 
 		System.out.println("\n login request data: " + username + ", " + password);
 
 		try {
-			user = userDaoImpl.fetchUser(username);
+			user = userDao.fetchUser(username);
 			System.out.println(user);
 
 			String pwdSalt = user.getPasswordSalt();
@@ -80,6 +68,7 @@ public class UserController {
 			String newPasswordHash = Password.generatePwdHash(newPassword);
 
 			if (newPasswordHash.equals(oldPwdHash)) {
+				session.setAttribute("user", user);
 
 				model.addAttribute("user", user);
 
@@ -120,7 +109,7 @@ public class UserController {
 		user.setPasswordHash(passwordHash);
 		// Password Encryption completes
 
-		int result = userDaoImpl.insertUser(user);
+		int result = userDao.insertUser(user);
 
 		if (result > 0) {
 			attributes.addFlashAttribute("message", "Registration Successful");
@@ -150,7 +139,7 @@ public class UserController {
 		user.setPasswordHash(passwordHash);
 		// Password Encryption completes
 
-		int result = userDaoImpl.insertUser(user);
+		int result = userDao.insertUser(user);
 
 		if (result > 0) {
 			attributes.addFlashAttribute("message", "Registration Successful");
@@ -162,48 +151,118 @@ public class UserController {
 
 	}
 
-//	@GetMapping("/viewProfile")
-//	public String viewUserProfile(Model model) throws SQLException, IOException {
-//
-//		// Assuming profileImage is stored as Blob
-//		Blob imageBlob = (Blob) user.getProfileImage();
-//
-//		if (imageBlob != null) {
-//			byte[] imageBytes = imageBlob.getBytes(1, (int) imageBlob.length());
-//			String base64Image = Base64.getEncoder().encodeToString(imageBytes);
-//			model.addAttribute("base64Image", base64Image);
-//		} else {
-//			model.addAttribute("base64Image", ""); // Handle when there's no image
-//		}
-//
-//		model.addAttribute("user", user);
-//		return "viewProfile"; // Return view page
-//	}
-
 	@GetMapping("/viewProfile")
-	public ModelAndView viewProfile(ModelAndView mView) {
-		mView.setViewName("profile");
-		mView.addObject("user", user);
-		return mView;
+	public String viewProfile(HttpSession session, Model model) throws IOException, SQLException {
+
+		User sessionUser = (User) session.getAttribute("user"); // Retrieve user from session
+		System.err.println(sessionUser);
+
+		if (sessionUser == null) {
+			model.addAttribute("errorMessage", "No user found in session.");
+			return "error"; // Redirect to error page if no user in session
+		}
+		System.out.println("User Status: " + sessionUser.getStatus());
+
+		// Convert profile image to Base64 if exists
+		if (sessionUser.getProfileImage() != null && !sessionUser.getProfileImage().isEmpty()) {
+			byte[] imageBytes = sessionUser.getProfileImage().getBytes();
+			String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+			session.setAttribute("profileImage", base64Image);
+			model.addAttribute("profileImage", base64Image);
+		} else {
+			model.addAttribute("profileImage", null);
+		}
+
+		if (sessionUser.getIdProof() != null && !sessionUser.getIdProof().isEmpty()) {
+
+			byte[] imageBytes = sessionUser.getIdProof().getBytes();
+			String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+			session.setAttribute("idProof", base64Image);
+			model.addAttribute("idProof", base64Image);
+		} else {
+			model.addAttribute("idProof", null);
+		}
+
+		model.addAttribute("user", sessionUser); // Pass user data to the view
+		return "profile"; // The JSP page to display the profile
 	}
 
-	@PostMapping("/updateProfile")
-	public String updateProfile(@ModelAttribute User updatedUser, RedirectAttributes attributes)
-			throws SerialException, IOException, SQLException {
-		// Update user information in the database
-
-		try {
-			user = userDaoImpl.modifyUser(updatedUser); // Simulate updating the user object
-			attributes.addAttribute("message", "Profile updated successfully");
-		} catch (EmptyResultDataAccessException e) {
-			attributes.addAttribute("message", "Updation failed. Please try again later");
+	// Show the update profile page with pre-filled data
+	@GetMapping("/update")
+	public String showUpdateProfilePage(HttpSession session, Model model) throws IOException {
+		User sessionUser = (User) session.getAttribute("user"); // Retrieve user from session
+		if (sessionUser == null) {
+			model.addAttribute("errorMessage", "No user found in session.");
+			return "error"; // Redirect to error page if no user in session
 		}
-		return "redirect:/user/viewProfile"; // Redirect back to view profile
+		byte[] imageBytes = sessionUser.getProfileImage().getBytes();
+		String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+		model.addAttribute("profileImage", base64Image);
+		
+		byte[] idImageBytes = sessionUser.getIdProof().getBytes();
+		String idBase64Image = Base64.getEncoder().encodeToString(idImageBytes);
+		model.addAttribute("idProof", idBase64Image);
+
+		model.addAttribute("user", sessionUser); // Add the session user object to pre-fill the form
+		return "updateProfile"; // JSP page to be displayed for updating profile
+	}
+
+	// Handle the update form submission
+	@PostMapping("/update")
+	public String updateUserProfile(@ModelAttribute("user") User user,
+			@RequestParam("profileImage") MultipartFile profileImage,@RequestParam("idProof") MultipartFile idProof, HttpSession session,
+			RedirectAttributes redirectAttributes) throws SerialException, IOException, SQLException {
+
+		System.out.println("start" + profileImage);
+		// Retrieve user from session
+		User sessionUser = (User) session.getAttribute("user");
+		if (sessionUser == null) {
+			redirectAttributes.addFlashAttribute("errorMessage", "No user found in session.");
+			return "redirect:/user/viewProfile"; // Redirect to profile page if no user in session
+		}
+
+		// Update session user details
+		sessionUser.setFirstName(user.getFirstName());
+		sessionUser.setLastName(user.getLastName());
+		sessionUser.setEmailId(user.getEmailId());
+		sessionUser.setMobileNo(user.getMobileNo());
+		sessionUser.setUsername(user.getUsername());
+		sessionUser.setDateOfBirth(user.getDateOfBirth());
+		sessionUser.setUsername(user.getUsername());
+		sessionUser.setStatus(user.getStatus());
+
+		// If a new profile image is uploaded, set it to the session user
+		if (profileImage != null && !profileImage.isEmpty()) {
+			sessionUser.setProfileImage(profileImage);
+			byte[] imageBytes = profileImage.getBytes();
+			String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+			session.setAttribute("profileImage", base64Image);
+		}
+		
+		if (idProof != null && !idProof.isEmpty()) {
+			sessionUser.setIdProof(idProof);
+			byte[] imageBytes = idProof.getBytes();
+			String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+			session.setAttribute("idProof", base64Image);
+		}
+
+		// Update the user in the database
+		boolean isUpdated = userDao.updateUser(sessionUser);
+		if (isUpdated) {
+			// Update session with the new user details
+			session.setAttribute("user", sessionUser); // Update session user after successful DB update
+			redirectAttributes.addFlashAttribute("successMessage", "Profile updated successfully!");
+		} else {
+			redirectAttributes.addFlashAttribute("errorMessage", "Failed to update profile.");
+		}
+
+		return "redirect:/user/viewProfile"; // Redirect to view profile after update
 	}
 
 	@GetMapping("/logout")
-	public String logout() {
-		return "home"; // JSP file name without extension
+	public String logout(HttpSession session) {
+		session.invalidate();
+		return "user_login"; // JSP file name without extension
 	}
 
 }

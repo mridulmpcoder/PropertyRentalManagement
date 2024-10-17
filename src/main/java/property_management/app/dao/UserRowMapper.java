@@ -13,7 +13,6 @@ import property_management.utility.ByteArrayMultipartFile;
 
 public class UserRowMapper implements RowMapper<User> {
 
-	@Override
 	public User mapRow(ResultSet rs, int rowNum) throws SQLException {
 
 		User user = new User();
@@ -32,16 +31,20 @@ public class UserRowMapper implements RowMapper<User> {
 		Role role = new Role();
 		role.setRoleId(rs.getInt("role_id"));
 		user.setRole(role);
-
 		Blob profileImageBlob = rs.getBlob("profile_image");
-
 		// Convert blob to MultipartFile
 		byte[] imageBytes = profileImageBlob.getBytes(1, (int) profileImageBlob.length());
 		MultipartFile profileImage = new ByteArrayMultipartFile(imageBytes, "profileImage.jpg", "image/jpeg");
-
 		user.setProfileImage(profileImage);
 
+		Blob idProofBlob = rs.getBlob("id_proof");
+		byte[] idProofBytes = idProofBlob.getBytes(1, (int) idProofBlob.length());
+		MultipartFile idProof = new ByteArrayMultipartFile(idProofBytes, "id_proof.jpg", "image/jpeg");
+		user.setIdProof(idProof);
+
 		return user;
+		
+
 	}
 
 }

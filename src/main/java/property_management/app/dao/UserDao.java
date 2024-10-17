@@ -20,7 +20,8 @@ public interface UserDao {
 
 	User fetchUser(String username);
 
-	User modifyUser(User updatedUser) throws SerialException, IOException, SQLException;
-
 	User getUserById(int userId);
+
+	boolean updateUser(User user) throws SerialException, IOException, SQLException;
+
 }

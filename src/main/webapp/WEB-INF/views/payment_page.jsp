@@ -86,9 +86,12 @@
 
         <!-- Action Buttons -->
         <div style="display: flex; justify-content: space-between;">
-            <button type="button" onclick="window.location.href='paymentGateway.jsp';">Make Payment</button>
+        <a href="/makePayment">
+    <button>Make Payment</button>
+</a></div>
+        
             <button type="button" class="btn-back" onclick="window.location.href='tenantDashboard.jsp';">Back to Dashboard</button>
         </div>
-    </div>
+   
 </body>
 </html>
