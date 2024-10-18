@@ -1,62 +1,70 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@page import="org.springframework.jdbc.core.JdbcTemplate"%>
+<%@ page import="java.util.List" %>
+<%@ page import="property_management.app.model.MaintenanceRequest" %>
+<%@ page import="property_management.app.dao.MaintenanceRequestDao" %>
+<%@ page import="property_management.app.dao.MaintenanceRequestDaoImpl" %>
+<%@ page import="javax.naming.InitialContext" %>
+<%@ page import="javax.naming.NamingException" %>
+
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Maintenance Requests</title>
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
 </head>
 <body>
- 
-<div class="container">
-    <h2>Maintenance Requests</h2>
- 
+    <h1>Maintenance Requests</h1>
     <table>
-        <tr>
-            <th>Request ID</th>
-            <th>Tenant Name</th>
-            <th>Issue</th>
-            <th>Status</th>
-        </tr>
-        <tr>
-            <td>001</td>
-            <td>John Doe</td>
-            <td>Leaky faucet</td>
-            <td>Pending</td>
-            <!--<td>
-                <button onclick="assignTechnician()">Assign Technician</button>
-                <button onclick="addTechnician()">Add Technician</button>
-            </td>-->
-        </tr>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Requested Date</th>
+                <th>Final Cost</th>
+            </tr>
+        </thead>
+        <tbody>
+            <%
+                List<MaintenanceRequest> requests = (List<MaintenanceRequest>) request.getAttribute("requests");
+           
+                for (MaintenanceRequest maintenanceRequest : requests) {
+            %>
+            <tr>
+                <td><%= maintenanceRequest.getMaintenanceId() %></td>
+                <td><%= maintenanceRequest.getRequestType() %></td>
+                <td><%= maintenanceRequest.getDescription() %></td>
+                <td><%= maintenanceRequest.getStatus() %></td>
+                <td><%= maintenanceRequest.getRequestedDate() %></td>
+                <td><%= maintenanceRequest.getFinalCost() %></td>
+            </tr>
+            <%
+                }
+            %>
+        </tbody>
     </table>
- 
-    
-</div>
-<a href="assignTechnician" class="button">
-<button class="btn-primary">Assign Technician</button></a>
-
-<a href="addTechnician" class="button">
-<button class="btn-primary">Add Technician</button></a>
-
-
-<a href="/user/openLandlordDashboard" class="button">
-<button class="btn-secondary">Back to DashBoard</button></a>
-
-<!-- 
-<script>
-    function assignTechnician() {
-        window.location.href = 'assign_technician.jsp';  // Redirect to Assign Technician page
-    }
- 
-    function addTechnician() {
-        window.location.href = 'add_technician.jsp';  // Redirect to Add Technician page
-    }
- 
-    function redirectToDashboard() {
-        window.location.href = 'manager_dashboard.jsp';  // Redirect to Manager Dashboard
-    }
-</script>-->
- 
 </body>
 </html>

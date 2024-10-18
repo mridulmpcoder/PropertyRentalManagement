@@ -1,65 +1,44 @@
 package property_management.app.controller;
 
-import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import property_management.app.dao.*;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import property_management.app.model.Tenant;
+import property_management.app.dao.TenantDao;
+import property_management.app.entities.Tenant;
 
-@WebServlet("/TenantController")
-public class TenantController extends HttpServlet {
-    private TenantDao tenantDAO = new TenantDaoImpl();
 
-    @PostMapping()
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String action = request.getParameter("action");
+@Controller
+public class TenantController {
 
-        try {
-            if ("Add Tenant".equals(action)) {
-                Tenant tenant = new Tenant();
-                
-                tenant.setFirstName(request.getParameter("First name"));
-                tenant.setLastName(request.getParameter("Last name"));
-                tenant.setEmail(request.getParameter("email"));
-                tenant.setContact(request.getParameter("Contact"));
-                
-                tenant.setLeaseStart(java.sql.Date.valueOf(request.getParameter("lease_start")));
-                tenant.setLeaseExpiry(java.sql.Date.valueOf(request.getParameter("lease_expiry")));
+    private final TenantDao tenantDao;
 
-                tenantDAO.addTenant(tenant);
-                request.setAttribute("message", "Tenant added successfully!");
-                response.sendRedirect("manage_tenants.jsp");
-            } else if ("Delete Tenant".equals(action)) {
-                int tenantId = Integer.parseInt(request.getParameter("tenant_id"));
-                tenantDAO.deleteTenant(tenantId);
-                request.setAttribute("message", "Tenant removed successfully!");
-                response.sendRedirect("manage_tenants.jsp");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred while processing your request.");
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid input.");
-        }
+    @Autowired
+    public TenantController(TenantDao tenantDao) {
+        this.tenantDao = tenantDao;
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
-            List<Tenant> tenantList = tenantDAO.getAllTenants();
-            request.setAttribute("tenants", tenantList);
-            request.getRequestDispatcher("manage_tenants.jsp").forward(request, response);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred while fetching tenants.");
-        }
+    @GetMapping("/viewTenants")
+    public String getAllTenants(Model model) {
+        List<Tenant> tenantList = tenantDao.getAllTenants();
+        model.addAttribute("tenantList", tenantList);
+        return "view_tenants"; // Refers to view_tenants.jsp
+    }
+
+    @PostMapping("/assignTenant")
+    public String assignTenantToProperty(@RequestParam int tenantId, @RequestParam int propertyId) {
+        tenantDao.assignTenantToProperty(tenantId, propertyId);
+        return "redirect:/viewTenants";
+    }
+
+    @PostMapping("/removeTenant")
+    public String removeTenantFromProperty(@RequestParam int tenantId, @RequestParam int propertyId) {
+        tenantDao.removeTenantFromProperty(tenantId, propertyId);
+        return "redirect:/viewTenants";
     }
 }

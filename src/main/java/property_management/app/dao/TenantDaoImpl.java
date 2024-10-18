@@ -1,69 +1,52 @@
 package property_management.app.dao;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
+import property_management.app.entities.Tenant;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-import property_management.app.model.Tenant;
-
+@Repository
 public class TenantDaoImpl implements TenantDao {
-    private static final String URL = System.getenv("DB_URL");
-    private static final String USERNAME = System.getenv("DB_USERNAME");
-    private static final String PASSWORD = System.getenv("DB_PASSWORD");
 
-    @Override
-    public void addTenant(Tenant tenant) throws SQLException {
-        String sql = "INSERT INTO tenants (first_name,last_name,email,Contact, lease_start, lease_expiry) VALUES (?, ?, ?, ?, ?)";
-        try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-        	pstmt.setString(1, tenant.getFirstName());
-            pstmt.setString(1, tenant.getLastName());
-            pstmt.setString(2, tenant.getEmail());
-            pstmt.setString(3, tenant.getContact());
-            pstmt.setDate(4, tenant.getLeaseStart());
-            pstmt.setDate(5, tenant.getLeaseExpiry());
-            pstmt.executeUpdate();
-        }
+    private final JdbcTemplate jdbcTemplate;
+
+    public TenantDaoImpl(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
-    public void deleteTenant(int tenantId) throws SQLException {
-        String sql = "DELETE FROM tenants WHERE id = ?";
-        try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, tenantId);
-            pstmt.executeUpdate();
-        }
-    }
-
-    @Override
-    public List<Tenant> getAllTenants() throws SQLException {
-        List<Tenant> tenantList = new ArrayList<>();
+    public List<Tenant> getAllTenants() {
         String sql = "SELECT * FROM tenants";
-        try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-             PreparedStatement pstmt = conn.prepareStatement(sql);
-             ResultSet rs = pstmt.executeQuery()) {
-            while (rs.next()) {
-                Tenant tenant = new Tenant();
-                tenant.setId(rs.getInt("id"));
-                tenant.setFirstName(rs.getString("firstName"));
-                tenant.setLastName(rs.getString("lastName"));
-                tenant.setEmail(rs.getString("email"));
-                tenant.setContact(rs.getString("MobileNo"));
-                tenant.setLeaseStart(rs.getDate("lease_start"));
-                tenant.setLeaseExpiry(rs.getDate("lease_expiry"));
-                tenantList.add(tenant);
-            }
-        }
-        return tenantList;
+        return jdbcTemplate.query(sql, new TenantRowMapper());
+        
     }
 
-	public static void save(Tenant tenant) {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void assignTenantToProperty(int tenantId, int propertyId) {
+        String sql = "INSERT INTO property_tenants (tenant_id, property_id) VALUES (?, ?)";
+        jdbcTemplate.update(sql, tenantId, propertyId);
+    }
+
+    @Override
+    public void removeTenantFromProperty(int tenantId, int propertyId) {
+        String sql = "DELETE FROM property_tenants WHERE tenant_id = ? AND property_id = ?";
+        jdbcTemplate.update(sql, tenantId, propertyId);
+    }
+    
+  
+    private static class TenantRowMapper implements RowMapper<Tenant> {
+        @Override
+        public Tenant mapRow(ResultSet rs, int rowNum) throws SQLException {
+            Tenant tenant = new Tenant();
+            tenant.setTenantId(rs.getInt("tenant_id"));
+            tenant.setTenantType(rs.getString("tenant_type"));
+            tenant.setNoOfPerson(rs.getInt("no_of_person"));
+            tenant.setTenantStatus(rs.getBoolean("tenant_status"));
+            return tenant;
+        }
+    }
 }

@@ -16,7 +16,7 @@
         <div class="button-container">
 
             <a href="/user/openPropertyManagement" class="button">Manage Properties</a>
-			<a href="/landlord/managerAssingment" class="button">Assign Managers</a>
+			<a href="/landlord/manageManagers" class="button">Manage Managers</a>
 			<a href="/landlord/tenantManagement" class="button">Tenant Management</a>
             <a href="/user/openReports" class="button">View Reports</a>
             <a href="/user/maintenanceRequests" class="button">View Maintenance Requests</a>
@@ -25,7 +25,7 @@
             <a href="/landlord/openPropertyManagement" class="button">Manage Properties</a>
             <a href="/landlord/openReports" class="button">View Reports</a>
 			
-            <a href="/landlord/managerMaintenance" class="button">Manage Maintenance Requests</a>
+            <a href="/maintenance-requests" class="button">Manage Maintenance Requests</a>
             <a href="/landlord/paymentManagement" class="button">Rent Payment Overview</a>
             <a href="/user/viewProfile" class="button">Profile & Settings</a>
 			<a href="/user/logout">Logout</a>
