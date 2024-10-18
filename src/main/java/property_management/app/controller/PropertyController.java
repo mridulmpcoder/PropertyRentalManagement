@@ -55,70 +55,84 @@ public class PropertyController {
 	}
 
 	@GetMapping("/PropertyPage")
-
 	public String showPropertiesPage(@RequestParam(value = "search", required = false) String search,
-
 			@RequestParam(value = "location", required = false) String location,
-
-			@RequestParam(value = "facilities", required = false) List<String> facilities,
-
-			Model model, HttpSession session) {
-
+			@RequestParam(value = "facilities", required = false) List<String> facilities, Model model,
+			HttpSession session) {
 		// Fetch properties based on search and filter criteria
-
 		List<Property> properties = propertyDaoImpl.findProperties(search, location, facilities);
 
 		// Fetch unique locations for the dropdown
-
 		List<String> locations = propertyDaoImpl.findUniqueLocations();
 
 		// Hardcode facilities for the checkbox
-
 		List<String> availableFacilities = List.of("Parking", "Swimming Pool", "Gym", "Security System", "Internet",
-
 				"Furnished", "Air Conditioning", "Elevator", "Garden");
 
 		// Add properties and filters to the model
-
 		model.addAttribute("properties", properties);
-
 		model.addAttribute("locations", locations);
-
 		model.addAttribute("facilities", availableFacilities);
 
 		// Get logged-in user from session
-
 		User loggedInUser = (User) session.getAttribute("loggedInUser");
-
 		model.addAttribute("loggedInUser", loggedInUser);
 
 		return "property_page"; // property_page.jsp
-
 	}
 
 	@GetMapping("/PropertyDetails/{propertyId}")
-
-	public String showPropertyDetails(@PathVariable int propertyId, Model model, HttpSession session) {
-
+	public String showPropertyDetails(@PathVariable int propertyId, Model model) {
 		Optional<Property> optionalProperty = propertyDaoImpl.findPropertyById(propertyId);
-
 		if (optionalProperty.isPresent()) {
-
 			model.addAttribute("property", optionalProperty.get());
-
-			// Get logged-in user from session
-
-			User loggedInUser = (User) session.getAttribute("loggedInUser");
-
-			model.addAttribute("loggedInUser", loggedInUser);
-
 			return "property_details"; // Assuming 'property_details.jsp'
-
 		}
-
-		return "redirect:/property/PropertyPage"; // Redirect if property not found
-
+		return "redirect:/PropertyPage"; // Redirect if property not found
 	}
+
+//	@GetMapping("/PropertyDetails/{propertyId}")
+//
+//	public String showPropertyDetails(@PathVariable int propertyId, Model model, HttpSession session) {
+//
+//		Optional<Property> optionalProperty = propertyDaoImpl.findPropertyById(propertyId);
+//
+//		if (optionalProperty.isPresent()) {
+//
+//			model.addAttribute("property", optionalProperty.get());
+//
+//			// Get logged-in user from session
+//
+//			User loggedInUser = (User) session.getAttribute("loggedInUser");
+//
+//			model.addAttribute("loggedInUser", loggedInUser);
+//
+//			return "property_details"; // Assuming 'property_details.jsp'
+//
+//		}
+//
+//		return "redirect:/property/PropertyPage"; // Redirect if property not found
+//
+//	}
+
+//	@GetMapping("/PropertyDetails/{propertyId}")
+//	public String showPropertyDetails(@PathVariable int propertyId, Model model, HttpSession session) {
+//	    Optional<Property> optionalProperty = propertyDaoImpl.findPropertyById(propertyId);
+//	    if (optionalProperty.isPresent()) {
+//	        model.addAttribute("property", optionalProperty.get());
+
+//	        // Get logged-in user from session
+//	        User loggedInUser = (User) session.getAttribute("loggedInUser");
+//	        model.addAttribute("loggedInUser", loggedInUser);
+
+//	        return "property_details"; // Assuming 'property_details.jsp'
+//	    }
+//	    else {
+//	         model.addAttribute("errorMessage", "Property not found.");
+//	         return "error_page"; // Handle error case
+//	     }
+//	    return "redirect:/property/PropertyPage"; // Redirect if property not found
+//	}
 
 	@GetMapping("/TenantHomePage")
 
@@ -139,61 +153,36 @@ public class PropertyController {
 	}
 
 	@GetMapping("/openAddProperty")
-
-	public String openAddProperty(Model model, HttpSession session) {
-
-		// Get logged-in user from session
-
-		User loggedInUser = (User) session.getAttribute("loggedInUser");
-
-		model.addAttribute("loggedInUser", loggedInUser);
-
-		return "addProperty";
-
+	public String openAddProperty(Model model) {
+		model.addAttribute("property", new Property()); // Add an empty Property object to the model
+		return "addProperty"; // JSP name
 	}
 
 	@PostMapping("/addProperty")
+	public String addProperty(@ModelAttribute("user") User user, @ModelAttribute Property property,
+			@RequestParam("image") MultipartFile image, RedirectAttributes attributes, HttpSession session)
+			throws IOException, SQLException {
 
-	public String addProperty(@ModelAttribute Property property,
+		// Handle the image separately and set it to the Property entity
 
-			@RequestParam("propertyImage") MultipartFile propertyImage,
-
-			RedirectAttributes attributes, HttpSession session) throws IOException, SQLException {
-
-		if (propertyImage != null && !propertyImage.isEmpty()) {
-
-			// Convert MultipartFile to byte[]
-
-			byte[] imageBytes = propertyImage.getBytes();
-
-			property.setpropertyImage(imageBytes); // Set image bytes in the property object
-
-		}
-
-		int result = propertyDaoImpl.insertUser(property);
+		// Insert the property into the database
+		int result = propertyDaoImpl.insertProperty(property);
 
 		if (result > 0) {
-
-			attributes.addFlashAttribute("message", "Addition Successful");
+			attributes.addFlashAttribute("message", "Property Addition Successful");
 
 			// Get logged-in user from session
+			User loggedInUser = (User) session.getAttribute("user");
 
-			User loggedInUser = (User) session.getAttribute("loggedInUser");
-
+			// Redirect based on user's role
 			if (loggedInUser != null && loggedInUser.getRole().equals("landlord")) {
-
-				return "redirect:/landlord/openPropertyManagement"; // Redirect based on the user's role
-
+				return "redirect:/property/PropertyPage";
 			}
 
 			return "redirect:/property/PropertyPage";
-
 		} else {
-
-			attributes.addFlashAttribute("message", "Addition Failed");
-
-			return "redirect:/property/openAddProperty";
-
+			attributes.addFlashAttribute("message", "Property Addition Failed");
+			return "redirect:/property/PropertyPage";
 		}
 
 	}

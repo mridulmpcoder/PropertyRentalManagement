@@ -1,6 +1,7 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,51 +14,122 @@
 <body>
 
 
-	 <h1>Add New Property</h1>
-    <form action="addProperty" method="post" enctype="multipart/form-data">
-        <label>Title:</label>
-        <input type="text" name="title" required/><br/>
-        
-        <label>Description:</label>
-        <textarea name="description" required></textarea><br/>
-        
-        <label>Location:</label>
-        <input type="text" name="location" required/><br/>
-        
-       <!--  <label>Type:</label>
-        <select name="type" required>
-            <option value="Society">Society</option>
-            <option value="Villas">Villas</option>
-            <option value="Shop">Shop</option>
-            <option value="Independent House">Independent House</option>
-        </select><br/> -->
+	<h2>Add Property</h2>
 
-        <label>Status:</label>
-        <select name="status" required>
-            <option value="Vacant">Vacant</option>
-            <option value="Occupied">Occupied</option>
-            <option value="Under Maintenance">Under Maintenance</option>
-        </select><br/>
-        
-        <label>Amenities:</label><br/>
-        <input type="checkbox" name="swimmingPool"/> Swimming Pool<br/>
-        <input type="checkbox" name="gym"/> Gym<br/>
-        <input type="checkbox" name="garden"/> Garden<br/>
-        <input type="checkbox" name="parking"/> Parking<br/>
-        <input type="checkbox" name="airConditioning"/> Air Conditioning<br/>
-        <input type="checkbox" name="elevator"/> Elevator<br/>
-        <input type="checkbox" name="securitySystem"/> Security System<br/>
-        <input type="checkbox" name="internet"/> Internet<br/>
-        <input type="checkbox" name="furnished"/> Furnished<br/>
-        
-        <label>Price:</label>
-        <input type="text" name="price" required/><br/>
-        
-        <input type="file" name="profileImage" accept=".jpg, .jpeg, .png, .pdf" required>
-        
-        <input type="submit" value="Add Property"/>
 
-		<%@include file="./message.jsp"%>
-	</form>
+
+
+	<form:form method="POST"
+		action="${pageContext.request.contextPath}/property/addProperty"
+		modelAttribute="property" enctype="multipart/form-data">
+
+		<table>
+			<tr>
+				<td>Property Title:</td>
+				<td><form:input path="title" /></td>
+			</tr>
+			<tr>
+				<td>Property Description:</td>
+				<td><form:input path="description" /></td>
+			</tr>
+			<tr>
+				<td>Property Type:</td>
+				<td><form:select path="type_id">
+						<form:option value="1">Apartment</form:option>
+						<form:option value="2">Shop</form:option>
+						<form:option value="3">Villa</form:option>
+					</form:select></td>
+			</tr>
+			<tr>
+				<td>Price:</td>
+				<td><form:input path="price" type="number" step="0.01" /></td>
+			</tr>
+			<tr>
+				<td>Status:</td>
+				<td><form:input path="status" /></td>
+			</tr>
+			<tr>
+				<td>Flat Number:</td>
+				<td><form:input path="flatNo" /></td>
+			</tr>
+			<tr>
+				<td>Floor:</td>
+				<td><form:input path="floor" /></td>
+			</tr>
+			<tr>
+				<td>Address:</td>
+				<td><form:input path="address" /></td>
+			</tr>
+			<tr>
+				<td>City:</td>
+				<td><form:input path="city" /></td>
+			</tr>
+			<tr>
+				<td>State:</td>
+				<td><form:input path="state" /></td>
+			</tr>
+			<tr>
+				<td>Zip Code:</td>
+				<td><form:input path="zip_code" /></td>
+			</tr>
+			<tr>
+				<td>Latitude:</td>
+				<td><form:input path="latitude" type="number" step="0.0000001" /></td>
+			</tr>
+			<tr>
+				<td>Longitude:</td>
+				<td><form:input path="longitude" type="number" step="0.0000001" /></td>
+			</tr>
+
+			<!-- Facilities -->
+			<tr>
+				<td>Swimming Pool:</td>
+				<td><form:checkbox path="swimmingPool" /></td>
+			</tr>
+			<tr>
+				<td>Gym:</td>
+				<td><form:checkbox path="gym" /></td>
+			</tr>
+			<tr>
+				<td>Parking:</td>
+				<td><form:checkbox path="parking" /></td>
+			</tr>
+			<tr>
+				<td>Garden:</td>
+				<td><form:checkbox path="garden" /></td>
+			</tr>
+			<tr>
+				<td>Air Conditioning:</td>
+				<td><form:checkbox path="airConditioning" /></td>
+			</tr>
+			<tr>
+				<td>Elevator:</td>
+				<td><form:checkbox path="elevator" /></td>
+			</tr>
+			<tr>
+				<td>Security System:</td>
+				<td><form:checkbox path="securitySystem" /></td>
+			</tr>
+			<tr>
+				<td>Internet:</td>
+				<td><form:checkbox path="internet" /></td>
+			</tr>
+			<tr>
+				<td>Furnished:</td>
+				<td><form:checkbox path="furnished" /></td>
+			</tr>
+
+			<!-- Image Upload -->
+			<tr>
+				<td>Property Image:</td>
+				<td><input type="file" name="image" id="image" /></td>
+
+			</tr>
+
+		</table>
+
+		<button type="submit">Add Property</button>
+
+	</form:form>
 </body>
 </html>
