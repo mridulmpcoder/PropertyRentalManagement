@@ -240,13 +240,23 @@ a {
     font-weight: bold;
 }
 
-/* Footer Styling */
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.content {
+    flex: 1; /* This allows the content area to grow and fill space */
+}
+
 .footer {
-    /* background: #2c3e50; */
     background-color: #2b250e;
     color: white;
     padding: 40px 0;
     margin-top: 50px;
+    width: 100%; /* Ensure the footer spans the full width */
 }
 
 .footer-content {
@@ -304,8 +314,6 @@ a {
     margin: 0;
 }
 
-<<<<<<< HEAD
-=======
 
 /* About Section Styles */
 .about-section {
@@ -440,55 +448,35 @@ a {
     background-repeat: no-repeat; /* Prevent repeating the image */
 }
 
->>>>>>> 04a5fe4d712584e599b81b102d4b4d9a378dfb0c
 /* Container for Cards */
 .dashboard-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
 }
-<<<<<<< HEAD
- 
-=======
 
->>>>>>> 04a5fe4d712584e599b81b102d4b4d9a378dfb0c
 /* Dashboard Card Styles */
 .dashboard-card {
     background-color: rgba(255, 255, 255, 0.9); /* White background with some transparency */
     border-radius: 10px;
-<<<<<<< HEAD
-=======
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
->>>>>>> 04a5fe4d712584e599b81b102d4b4d9a378dfb0c
     width: 300px;
     padding: 20px;
     margin: 20px;
     text-align: center;
     transition: transform 0.3s, box-shadow 0.3s;
 }
-<<<<<<< HEAD
- 
-=======
 
->>>>>>> 04a5fe4d712584e599b81b102d4b4d9a378dfb0c
 /* Card Heading Styles */
 .dashboard-card h2 {
     color: #333;
 }
-<<<<<<< HEAD
- 
-=======
 
->>>>>>> 04a5fe4d712584e599b81b102d4b4d9a378dfb0c
 /* Card Paragraph Styles */
 .dashboard-card p {
     color: #777;
 }
-<<<<<<< HEAD
- 
-=======
 
->>>>>>> 04a5fe4d712584e599b81b102d4b4d9a378dfb0c
 /* Button Styles */
 .dashboard-card .btn-primary {
     display: inline-block;
@@ -500,72 +488,12 @@ a {
     border-radius: 5px;
     transition: background-color 0.3s;
 }
-<<<<<<< HEAD
- 
- 
-=======
 
 /* Button Hover Effects */
->>>>>>> 04a5fe4d712584e599b81b102d4b4d9a378dfb0c
 .dashboard-card .btn-primary:hover {
     background-color: #0056b3; /* Darker shade on hover */
 }
 
-<<<<<<< HEAD
-.btn-primary {
-    background-color: #f1c40f;
-    color: #2c3e50;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 5px;
-    transition: background 0.3s;
-}
- 
-.btn-primary:hover {
-    background-color: #e67e22;
-    color: white;
-}
- 
-/* Cards Section Styling */
-.cards-container {
-    padding: 60px 0;
-    background-color: #ecf0f1;
-}
- 
-.cards-title h2 {
-    text-align: center;
-    font-size: 36px;
-    color: #2c3e50;
-    margin-bottom: 50px;
-    font-weight: bold;
-}
- 
- 
-.card {
-    background: #fff;
-    padding: 20px;
-    width: 300px;
-    text-align: center;
-}
- 
-.card img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 10px;
-}
- 
-.card h3 {
-    font-size: 22px;
-    color: #34495e;
-    margin: 15px 0;
-}
- 
-.card p {
-    font-size: 16px;
-    color: #7f8c8d;
-}
-=======
 /* Card Hover Effects */
 .dashboard-card:hover {
     transform: translateY(-10px);
@@ -599,16 +527,35 @@ body {
 
 
 
+.cards-header {
+    display: flex;
+    justify-content: space-between; /* Space between header and link */
+    align-items: center; /* Center items vertically */
+    margin-bottom: 20px; /* Space below the header */
+}
 
+.cards-header h2 {
+    margin: 0; /* Remove default margin from the header */
+}
+
+/* Existing styles for see-all-link */
 .see-all-link {
-    color: #007BFF;
-    text-decoration: none;
-    font-size: 14px;
+    background-color: #f1c40f; /* Button background color */
+    color: white; /* Button text color */
+    padding: 10px 20px; /* Padding for the button */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Rounded corners */
+    text-decoration: none; /* Remove underline */
+    font-weight: bold; /* Bold text */
+    transition: background-color 0.3s; /* Transition for hover effect */
+    margin-right: 10px;
 }
 
 .see-all-link:hover {
-    text-decoration: underline;
+    background-color: #e0b10f; /* Darker shade on hover */
 }
+
+
 
 /* Carousel Styling */
 .carousel {
@@ -946,4 +893,3 @@ body {
     padding: 0;
 }
 
->>>>>>> 04a5fe4d712584e599b81b102d4b4d9a378dfb0c

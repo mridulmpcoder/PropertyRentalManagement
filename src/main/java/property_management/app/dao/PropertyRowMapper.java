@@ -27,6 +27,7 @@ public class PropertyRowMapper implements RowMapper<Property> {
 	        property.setSecuritySystem(rs.getBoolean("security_system"));
 	        property.setInternet(rs.getBoolean("internet"));
 	        property.setFurnished(rs.getBoolean("furnished"));
+	       
 	        return property;
 	    }
 }

@@ -2,6 +2,8 @@ package property_management.app.entities;
 
 import java.util.Base64;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class Property {
 	private int propertyId; // Renamed for consistency
 	private String title;
@@ -10,6 +12,18 @@ public class Property {
 	private String type; // Consider clarifying this if necessary
 	private Double price; // Changed to BigDecimal for financial precision
 	private byte[] propertyImage; // Binary data for image
+	private String flatNo;
+	private String floor;
+	private String address;
+	private String city;
+	private String state;
+	private String zip_code;
+	private double latitude;
+	private double longitude;
+	private MultipartFile image;
+	private String status;
+	private int type_id;
+	 
 
 	// Facilities represented as separate boolean fields for better control
 	private boolean swimmingPool;
@@ -116,6 +130,97 @@ public class Property {
 	public void setpropertyImage(byte[] propertyImage) {
 		this.propertyImage = propertyImage;
 	}
+	
+	
+	
+
+	public int getType_id() {
+		return type_id;
+	}
+
+	public void setType_id(int type_id) {
+		this.type_id = type_id;
+	}
+
+	public byte[] getPropertyImage() {
+		return propertyImage;
+	}
+
+	public void setPropertyImage(byte[] propertyImage) {
+		this.propertyImage = propertyImage;
+	}
+
+	public String getFlatNo() {
+		return flatNo;
+	}
+
+	public void setFlatNo(String flatNo) {
+		this.flatNo = flatNo;
+	}
+
+	public String getFloor() {
+		return floor;
+	}
+
+	public void setFloor(String floor) {
+		this.floor = floor;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public String getZip_code() {
+		return zip_code;
+	}
+
+	public void setZip_code(String zip_code) {
+		this.zip_code = zip_code;
+	}
+
+	public double getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(double latitude) {
+		this.latitude = latitude;
+	}
+
+	public double getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(double longitude) {
+		this.longitude = longitude;
+	}
+
+	public MultipartFile getImage() {
+		return image;
+	}
+
+	public void setImage(MultipartFile image) {
+		this.image = image;
+	}
 
 	public boolean isSwimmingPool() {
 		return swimmingPool;
@@ -187,6 +292,16 @@ public class Property {
 
 	public void setFurnished(boolean furnished) {
 		this.furnished = furnished;
+	}
+
+	
+	
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	public String getImageAsBase64() {

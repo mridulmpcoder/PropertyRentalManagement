@@ -13,38 +13,45 @@ import property_management.utility.ByteArrayMultipartFile;
 
 public class UserRowMapper implements RowMapper<User> {
 
-	public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+    public User mapRow(ResultSet rs, int rowNum) throws SQLException {
 
-		User user = new User();
+        User user = new User();
 
-		user.setUserId(rs.getInt("user_id"));
-		user.setFirstName(rs.getString("first_name"));
-		user.setLastName(rs.getString("last_name"));
-		user.setEmailId(rs.getString("email_id"));
-		user.setMobileNo(rs.getString("mobile_no"));
-		user.setDateOfBirth(rs.getDate("date_of_birth"));
-		user.setUsername(rs.getString("username"));
-		user.setPasswordSalt(rs.getString("passwordSalt"));
-		user.setPasswordHash(rs.getString("passwordHash"));
-		user.setStatus(rs.getString("status"));
+        user.setUserId(rs.getInt("user_id"));
+        user.setFirstName(rs.getString("first_name"));
+        user.setLastName(rs.getString("last_name"));
+        user.setEmailId(rs.getString("email_id"));
+        user.setMobileNo(rs.getString("mobile_no"));
+        user.setDateOfBirth(rs.getDate("date_of_birth"));
+        user.setUsername(rs.getString("username"));
+        user.setPasswordSalt(rs.getString("passwordSalt"));
+        user.setPasswordHash(rs.getString("passwordHash"));
+        user.setStatus(rs.getString("status"));
 
-		Role role = new Role();
-		role.setRoleId(rs.getInt("role_id"));
-		user.setRole(role);
-		Blob profileImageBlob = rs.getBlob("profile_image");
-		// Convert blob to MultipartFile
-		byte[] imageBytes = profileImageBlob.getBytes(1, (int) profileImageBlob.length());
-		MultipartFile profileImage = new ByteArrayMultipartFile(imageBytes, "profileImage.jpg", "image/jpeg");
-		user.setProfileImage(profileImage);
+        Role role = new Role();
+        role.setRoleId(rs.getInt("role_id"));
+        user.setRole(role);
 
-		Blob idProofBlob = rs.getBlob("id_proof");
-		byte[] idProofBytes = idProofBlob.getBytes(1, (int) idProofBlob.length());
-		MultipartFile idProof = new ByteArrayMultipartFile(idProofBytes, "id_proof.jpg", "image/jpeg");
-		user.setIdProof(idProof);
+        // Handle profile image blob
+        Blob profileImageBlob = rs.getBlob("profile_image");
+        if (profileImageBlob != null) {
+            byte[] imageBytes = profileImageBlob.getBytes(1, (int) profileImageBlob.length());
+            MultipartFile profileImage = new ByteArrayMultipartFile(imageBytes, "profileImage.jpg", "image/jpeg");
+            user.setProfileImage(profileImage);
+        } else {
+            user.setProfileImage(null); // or handle as needed
+        }
 
-		return user;
-		
+        // Handle id proof blob
+        Blob idProofBlob = rs.getBlob("id_proof");
+        if (idProofBlob != null) {
+            byte[] idProofBytes = idProofBlob.getBytes(1, (int) idProofBlob.length());
+            MultipartFile idProof = new ByteArrayMultipartFile(idProofBytes, "id_proof.jpg", "image/jpeg");
+            user.setIdProof(idProof);
+        } else {
+            user.setIdProof(null); // or handle as needed
+        }
 
-	}
-
+        return user;
+    }
 }

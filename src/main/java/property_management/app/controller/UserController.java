@@ -69,7 +69,9 @@ public class UserController {
 
 			if (newPasswordHash.equals(oldPwdHash)) {
 				session.setAttribute("user", user);
+				session.setAttribute("isLoggedIn", true);
 
+				
 				model.addAttribute("user", user);
 
 				int roleId = user.getRole().getRoleId();
@@ -78,7 +80,8 @@ public class UserController {
 				} else if (roleId == 2) {
 					return "manager_dashboard";
 				} else if (roleId == 3) {
-					return "tenant_dashboard";
+					
+	                return "redirect:/tenant/tenantDashboard"; // Use redirect to the tenant controller
 				}
 			} else {
 				attributes.addFlashAttribute("message", "Incorrect Password");
