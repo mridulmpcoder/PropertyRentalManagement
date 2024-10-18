@@ -15,9 +15,9 @@
             <h1>Property Management</h1>
             <nav>
                 <ul>
-                    <li><a href="/user/openLandlordDashboard">Dashboard</a></li>
-                    <li><a href="${pageContext.request.contextPath}/addProperty">Add New Property</a></li>
-                    <li><a href="../">Logout</a></li>
+                    <li><a href="/landlord/openLandlordDashboard">Dashboard</a></li>
+                    <li><a href="/property/openAddProperty">Add New Property</a></li>
+                    <li><a href="/user/logout">Logout</a></li>
                 </ul>
             </nav>
         </header>

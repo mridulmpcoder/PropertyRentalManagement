@@ -39,13 +39,16 @@ public class LandlordController {
 	@Autowired
 	UserDaoImpl userDaoImpl;
 
+	@GetMapping("/openLandlordDashboard")
+	public String showDashboard() {
+		return "landlord_dashboard"; // JSP file name without extension
+	}
+
 	@GetMapping("/openPropertyManagement")
 	public String openPropertyManagement() {
 
 		return "property_management";
 	}
-
-	
 
 	@GetMapping("/openReports")
 	public String openReports() {
@@ -65,7 +68,6 @@ public class LandlordController {
 		return "manager_assignment";
 	}
 
-
 	@GetMapping("/manageTenants")
 	public String manageTenants() {
 		return "manage_tenants"; // JSP file name without extension
@@ -81,8 +83,6 @@ public class LandlordController {
 		return "delete_tenant"; // JSP file name without extension
 	}
 
-	
-
 	@GetMapping("/assignTechnician")
 	public String assignTechnician() {
 		return "assign_technician"; // JSP file name without extension
@@ -92,7 +92,6 @@ public class LandlordController {
 	public String addTechnician() {
 		return "add_technician"; // JSP file name without extension
 	}
-
 
 	// Additional mappings for other pages...
 }
