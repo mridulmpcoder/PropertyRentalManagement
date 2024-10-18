@@ -42,9 +42,11 @@ public class UserController {
 	@GetMapping("/openManagerRegistrationPage")
 	public ModelAndView openManagerRegistrationPage(ModelAndView modelAndView) {
 
-		List<Role> listOfRoles = userDaoImpl.fetchAllRoles();
-
-		modelAndView.addObject("listOfRoles", listOfRoles);
+		/*
+		 * List<Role> listOfRoles = userDaoImpl.fetchAllRoles();
+		 * 
+		 * modelAndView.addObject("listOfRoles", listOfRoles);
+		 */
 		modelAndView.setViewName("manager_registration");
 
 		return modelAndView;
@@ -160,30 +162,30 @@ public class UserController {
 
 	}
 
-	@GetMapping("/viewProfile")
-	public String viewUserProfile(Model model) throws SQLException, IOException {
-
-		// Assuming profileImage is stored as Blob
-		Blob imageBlob = (Blob) user.getProfileImage();
-
-		if (imageBlob != null) {
-			byte[] imageBytes = imageBlob.getBytes(1, (int) imageBlob.length());
-			String base64Image = Base64.getEncoder().encodeToString(imageBytes);
-			model.addAttribute("base64Image", base64Image);
-		} else {
-			model.addAttribute("base64Image", ""); // Handle when there's no image
-		}
-
-		model.addAttribute("user", user);
-		return "viewProfile"; // Return view page
-	}
-
 //	@GetMapping("/viewProfile")
-//	public ModelAndView viewProfile(ModelAndView mView) {
-//		mView.setViewName("profile");
-//		mView.addObject("user", user);
-//		return mView;
+//	public String viewUserProfile(Model model) throws SQLException, IOException {
+//
+//		// Assuming profileImage is stored as Blob
+//		Blob imageBlob = (Blob) user.getProfileImage();
+//
+//		if (imageBlob != null) {
+//			byte[] imageBytes = imageBlob.getBytes(1, (int) imageBlob.length());
+//			String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+//			model.addAttribute("base64Image", base64Image);
+//		} else {
+//			model.addAttribute("base64Image", ""); // Handle when there's no image
+//		}
+//
+//		model.addAttribute("user", user);
+//		return "viewProfile"; // Return view page
 //	}
+
+	@GetMapping("/viewProfile")
+	public ModelAndView viewProfile(ModelAndView mView) {
+		mView.setViewName("profile");
+		mView.addObject("user", user);
+		return mView;
+	}
 
 	@PostMapping("/updateProfile")
 	public String updateProfile(@ModelAttribute User updatedUser, RedirectAttributes attributes)
@@ -201,17 +203,7 @@ public class UserController {
 
 	@GetMapping("/logout")
 	public String logout() {
-		return "index"; // JSP file name without extension
-	}
-
-	@GetMapping("/openLandlordDashboard")
-	public String showDashboard() {
-		return "landlord_dashboard"; // JSP file name without extension
-	}
-
-	@GetMapping("/manager_dashboard")
-	public String managerdashboard() {
-		return "manager_dashboard"; // JSP file name without extension
+		return "home"; // JSP file name without extension
 	}
 
 }

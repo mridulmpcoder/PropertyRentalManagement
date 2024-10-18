@@ -106,7 +106,7 @@
         </tr>
     </table>
     <br>
-    <form action="/user/updateProfile" method="GET">
+    <form action="/user/updateProfile" method="POST">
         <button type="submit">Update Profile</button>
     </form>
 
