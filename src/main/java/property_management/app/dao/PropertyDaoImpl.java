@@ -5,14 +5,31 @@ import org.springframework.stereotype.Repository;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.sql.rowset.serial.SerialException;
+
 @Repository
-public class PropertyDaoImpl {
+public class PropertyDaoImpl implements PropertyDAO{
 
 	private final JdbcTemplate jdbcTemplate;
+	
+	
+	@Override
+	public Double getAmountByTenantId(Long tenantId) {
+	    String sql = "SELECT Price FROM Property WHERE tenant_id = ?"; // Adjust based on the actual column name
+	    try {
+	        return jdbcTemplate.queryForObject(sql, new Object[]{tenantId}, Double.class);
+	    } catch (EmptyResultDataAccessException e) {
+	        return null; // Or handle this case as needed
+	    }
+	}
+
+
 
 	public PropertyDaoImpl(JdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
@@ -86,4 +103,20 @@ public class PropertyDaoImpl {
 		
 		return jdbcTemplate.query(sql, new PropertyRowMapper());
 	}
+
+
+	@Override
+	public int insertUser(Property property) throws IOException, SerialException, SQLException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+	@Override
+	public List<Property> findProperties(String search, String location, List<String> facilities) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
 }

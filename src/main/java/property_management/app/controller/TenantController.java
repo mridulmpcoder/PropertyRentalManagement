@@ -2,6 +2,7 @@ package property_management.app.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -19,7 +20,13 @@ public class TenantController {
 	
 	@GetMapping("/paymentPage")
 	public String paymentPage() {
-		return "payment_page";
+		return "payment";
 	}
+	@GetMapping("/submitPayment")
+	public String submitPayment() {
+	    
+	    return "success"; 
+	}
+
 
 }

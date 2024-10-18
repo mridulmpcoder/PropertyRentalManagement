@@ -1,15 +1,38 @@
 package property_management.app.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import property_management.app.dao.LandlordDAO;
 import property_management.app.dao.UserDaoImpl;
+import property_management.app.entities.Landlord;
 import property_management.app.entities.User;
 
 @Controller
 @RequestMapping("/landlord")
 public class LandlordController {
+	
+	@Autowired 
+    private LandlordDAO landlordDAO; 
+ 
+    @GetMapping("/api/payment/details") 
+    public Map<String, Object> getPaymentDetails(@RequestParam("tenantId") Long tenantId) { 
+        Landlord landlord = landlordDAO.getLandlordDetails(); 
+        double amount = 12345.67; // Example amount, you should fetch this based on the tenantId 
+ 
+        Map<String, Object> response = new HashMap<>(); 
+        response.put("bankDetails", landlord.getBankDetails()); 
+        response.put("upiDetails", landlord.getUpiDetails()); 
+        response.put("amount", amount); 
+ 
+        return response; 
+    }
 
 	private User user;
 
