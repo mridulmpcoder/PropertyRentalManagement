@@ -47,7 +47,12 @@ public class LeaseAgreementController {
     public String listLeaseAgreementsByUserId(@ModelAttribute("user") User user,HttpSession session, Model model) {
         User loggedInUser = (User) session.getAttribute("user"); // Get logged-in user from session
         if (loggedInUser != null) {
-
+//        	try {
+//                Integer tenantId = leaseAgreementDao.getTenantIdByUserId(loggedInUser.getUserId());
+//                System.out.println("Tenant ID for User ID " + loggedInUser.getUserId() + ": " + tenantId);
+//            } catch (Exception e) {
+//                System.out.println("Error retrieving tenant ID: " + e.getMessage());
+//            }
             List<LeaseAgreement> leaseAgreements = leaseAgreementDao.getLeaseAgreementsByUserId(loggedInUser.getUserId());
 
             System.out.println("Lease Agreements for User ID " + loggedInUser.getUserId() + ": " + leaseAgreements); // Log the list
