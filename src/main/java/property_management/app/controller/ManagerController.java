@@ -45,10 +45,11 @@ public class ManagerController {
     }
 
     @PostMapping("/approveManager")
-    public String approveManager(@RequestParam int managerId,Model model) {
+    public String approveManager(@RequestParam int managerId,RedirectAttributes redirectAttributes) {
         managerDao.approveManager(managerId);
-        model.addAttribute("message", "Manager approved successfully!");
-        return approveRejectManagers(model);
+        redirectAttributes.addFlashAttribute("message", "Manager approved successfully!");
+        //return approveRejectManagers(model);
+        return "redirect:/approveRejectManagers";
     }
 
 	 @PostMapping("/rejectManager")
@@ -79,6 +80,7 @@ public class ManagerController {
         model.addAttribute("message", "Manager assigned successfully!");
         return showAssignManagersPage(model);
     }
+    
     
     @PostMapping("/unassignManager")
     public String unassignManager(@RequestParam int propertyId, Model model) {

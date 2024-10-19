@@ -9,5 +9,8 @@ public interface ManagerDao {
     void approveManager(int managerId);
     void rejectManager(int managerId);
 	List<Manager> getApprovedManagers();
+	//Manager findById(int managerId);
+	void update(Manager manager);
+	
 	
 }

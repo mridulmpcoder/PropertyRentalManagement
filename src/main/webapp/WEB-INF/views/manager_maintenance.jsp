@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@page import="org.springframework.jdbc.core.JdbcTemplate"%>
 <%@ page import="java.util.List" %>
-<%@ page import="property_management.app.model.MaintenanceRequest" %>
+<%@ page import="property_management.app.entities.MaintenanceRequest" %>
 <%@ page import="property_management.app.dao.MaintenanceRequestDao" %>
 <%@ page import="property_management.app.dao.MaintenanceRequestDaoImpl" %>
 <%@ page import="javax.naming.InitialContext" %>

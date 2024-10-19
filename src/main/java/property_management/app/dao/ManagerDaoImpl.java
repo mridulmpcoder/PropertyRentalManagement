@@ -10,8 +10,9 @@ import java.util.List;
 @Repository
 public class ManagerDaoImpl implements ManagerDao {
     private final JdbcTemplate jdbcTemplate;
-
-    public ManagerDaoImpl(JdbcTemplate jdbcTemplate) {
+    
+    
+	public ManagerDaoImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
@@ -38,4 +39,14 @@ public class ManagerDaoImpl implements ManagerDao {
         String sql = "SELECT * FROM managers WHERE approved = TRUE";
         return jdbcTemplate.query(sql, new ManagerRowMapper());
     }
+    
+
+
+	@Override
+	public void update(Manager manager) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
 }

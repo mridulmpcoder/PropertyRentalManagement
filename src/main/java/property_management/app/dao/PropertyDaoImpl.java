@@ -1,9 +1,13 @@
 package property_management.app.dao;
 
 import java.util.List;
+
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+
+import property_management.app.entities.Manager;
 import property_management.app.entities.Property;
 
 @Repository
@@ -16,10 +20,16 @@ public class PropertyDaoImpl implements PropertyDao {
 
     @Override
     public List<Property> getAllProperties() {
-        String sql = "SELECT * FROM property";
-        return jdbcTemplate.query(sql, new PropertyRowMapper());
+        String sql = "SELECT property_id,title FROM property";
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Property.class));
     }
-
+    
+	/*
+	 * @Override public List<Manager> getAssignedManagers(int propertyId) { String
+	 * sql = "SELECT * FROM managers WHERE property_id = ?"; return
+	 * jdbcTemplate.query(sql, new BeanManagerRowMapper<>(Manager.class)); }
+	 */
+    
     @Override
     public Property getPropertyById(int propertyId) {
         String sql = "SELECT * FROM property WHERE property_id = ?";
@@ -50,5 +60,11 @@ public class PropertyDaoImpl implements PropertyDao {
             );
         }
     }
+
+	@Override
+	public List<Manager> getAssignedManagers(int propertyId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

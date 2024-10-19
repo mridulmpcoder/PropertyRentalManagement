@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="property_management.app.entities.Manager" %>
-<%@ page import="property_management.app.model.Property"%>
+<%@ page import="property_management.app.entities.Property"%>
 <%@ page import="java.util.List"%>
 
 <%
@@ -83,7 +83,7 @@
     <tr>
         <td><%= property.getPropertyId() %></td>
         <td><%= property.getTitle() %></td>
-        <td><%= property.getManagerId() %></td> <!-- Assuming you have a way to access the manager's resume -->
+        <td><%= property.getManagerId() %></td>
         <td>
             <form action="<%= request.getContextPath() + "/unassignManager" %>" method="POST" style="display:inline;">
                 <input type="hidden" name="propertyId" value="<%= property.getPropertyId() %>"/>
@@ -110,4 +110,3 @@
 
 </body>
 </html>
- 

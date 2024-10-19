@@ -26,11 +26,11 @@ public class Property {
     private String zipCode;
     private BigDecimal latitude;
     private BigDecimal longitude;
-    private Integer typeId;
-    private Integer managerId;
-    private Integer tenantId;
-    private Integer userId;
-    private Integer buildingId;
+    private int typeId;
+    private int managerId;
+    private int tenantId;
+    private int userId;
+    private int buildingId;
 
     // Constructor
     public Property() {
