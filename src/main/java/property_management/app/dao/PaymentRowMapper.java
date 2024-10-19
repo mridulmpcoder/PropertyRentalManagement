@@ -9,10 +9,17 @@ import property_management.app.entities.Payment;
 
 public class PaymentRowMapper implements RowMapper<Payment> {
 
-	@Override
-	public Payment mapRow(ResultSet rs, int rowNum) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	 @Override
+     public Payment mapRow(ResultSet rs, int rowNum) throws SQLException {
+         Payment payment = new Payment();
+         payment.setPaymentId(rs.getLong("payment_id"));
+         payment.setTenantId(rs.getLong("tenant_id"));
+         payment.setAmount(rs.getDouble("price"));
+         payment.setPaymentMethod(rs.getString("payment_method"));
+         payment.setPaymentDate(rs.getDate("payment_date").toLocalDate());
+         payment.setReceipt(rs.getBytes("receipt"));
+         
+         return payment;
+     }
 
 }

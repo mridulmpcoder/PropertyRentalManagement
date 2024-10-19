@@ -1,97 +1,108 @@
+<%@page import="property_management.app.entities.Payment"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ page import="java.util.List" %>
+
+
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Payment Page</title>
+    <title>Payment Details</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            margin: 0;
-            padding: 20px;
+            margin: 20px;
         }
-        .container {
-            width: 60%;
-            margin: auto;
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        h2 {
-            text-align: center;
-            color: #333;
-        }
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
         }
+
         table, th, td {
             border: 1px solid #ddd;
         }
+
         th, td {
             padding: 10px;
-            text-align: center;
+            text-align: left;
         }
+
         th {
             background-color: #f2f2f2;
         }
-        button {
-            width: 48%;
-            padding: 10px;
-            border: none;
-            background-color: #5cb85c;
+
+        .btn {
+            padding: 10px 20px;
+            background-color: #4CAF50;
             color: white;
-            font-size: 16px;
-            border-radius: 5px;
+            border: none;
+            text-decoration: none;
+            margin-right: 10px;
             cursor: pointer;
         }
-        button:hover {
-            background-color: #4cae4c;
+
+        .btn:hover {
+            background-color: #45a049;
         }
+
         .btn-back {
-            background-color: #d9534f;
-            float: right;
+            background-color: #f44336;
+        }
+
+        .btn-back:hover {
+            background-color: #d32f2f;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Tenant Payment Page</h2>
 
-        <!-- Payment History Section -->
-        <h3>Past Payment History</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>Payment Date</th>
-                    <th>Amount</th>
-                    <th>Payment Method</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <c:forEach var="payment" items="${payments}">
+<h2>Old Payment Details</h2>
+
+<!-- Payment Details Table -->
+<table>
+    <thead>
+        <tr>
+            <th>Payment ID</th>
+            <th>Tenant Name</th>
+            <th>Property</th>
+            <th>Amount</th>
+            <th>Payment Method</th>
+            <th>Payment Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Iterate over the payment list using JSP scriptlets -->
+        <%
+            List<Payment> paymentList = (List<Payment>) request.getAttribute("paymentList");
+            if (paymentList != null && !paymentList.isEmpty()) {
+                for (Payment payment : paymentList) {
+        %>
                     <tr>
-                        <td>${payment.paymentDate}</td>
-                        <td>${payment.amount}</td>
-                        <td>${payment.paymentMethod}</td>
-                        <td>${payment.status}</td>
+                        <td><%= payment.getPaymentId() %></td>
+                        <td><%= payment.getTenantId() %></td>
+                        <td><%= payment.getAmount() %></td>
+                        <td><%= payment.getPaymentMethod() %></td>
+                        <td><%= payment.getPaymentDate() %></td>
                     </tr>
-                </c:forEach>
-            </tbody>
-        </table>
+        <%
+                }
+            } else {
+        %>
+                <tr>
+                    <td colspan="6">No payment records found.</td>
+                </tr>
+        <%
+            }
+        %>
+    </tbody>
+</table>
 
-        <!-- Action Buttons -->
-        <div style="display: flex; justify-content: space-between;">
-        <a href="/makePayment">
-    <button>Make Payment</button>
-</a></div>
-        
-            <button type="button" class="btn-back" onclick="window.location.href='tenantDashboard.jsp';">Back to Dashboard</button>
-        </div>
-   
+<!-- Buttons for make payment and back to dashboard -->
+<a href="<%= request.getContextPath() %>/tenant/paymentPage" class="btn">Make Payment</a>
+<a href="<%= request.getContextPath() %>/tenant/tenantDashboard" class="btn btn-back">Back to Dashboard</a>
+
 </body>
 </html>

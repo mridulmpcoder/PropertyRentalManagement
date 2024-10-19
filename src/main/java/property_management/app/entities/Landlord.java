@@ -4,6 +4,33 @@ public class Landlord {
 
 	private String landlordId;
 	private User user;
+	private Long id;
+	private String bankDetails;
+	private String upiDetails;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getBankDetails() {
+		return bankDetails;
+	}
+
+	public void setBankDetails(String bankDetails) {
+		this.bankDetails = bankDetails;
+	}
+
+	public String getUpiDetails() {
+		return upiDetails;
+	}
+
+	public void setUpiDetails(String upiDetails) {
+		this.upiDetails = upiDetails;
+	}
 
 	public Landlord() {
 		super();

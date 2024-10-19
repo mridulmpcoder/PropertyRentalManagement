@@ -19,12 +19,18 @@
 			<input type="text" name="emailId" placeholder="Enter Email Id" /><br />
 			<input type="text" name="mobileNo" placeholder="Enter Mobile No" /><br />
 			<input type="date" name="dateOfBirth" /><br /> 
+			<input type="text" name="experience" placeholder="Enter experience as a manager" /><br /> 
 			<input type="text" name="username" placeholder="Enter username" /><br /> 
-			<input type="password" name="password" placeholder="Enter password" /><br />
-
+			<input type="password" name="password" placeholder="Enter password" />
+			
+			<p>Upload Profile Image</p>
 			<input type="file" name="profileImage" accept=".jpg, .jpeg, .png, .pdf" required>
 			
+			<p>Upload Id Proof</p>	
 			<input type="file" name="idProof" accept=".jpg, .jpeg, .png, .pdf" required>
+			
+			<p>Upload Your Latest Resume</p>	
+			<input type="file" name="resume" accept=".jpg, .jpeg, .png, .pdf" required>
 
 
 			<input type="submit" value="Submit" />

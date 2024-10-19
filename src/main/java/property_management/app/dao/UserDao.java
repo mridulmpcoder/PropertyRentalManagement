@@ -7,12 +7,15 @@ import java.util.Map;
 
 import javax.sql.rowset.serial.SerialException;
 
+import property_management.app.entities.Manager;
 import property_management.app.entities.Role;
 import property_management.app.entities.User;
 
 public interface UserDao {
 
 	int insertUser(User user) throws IOException, SerialException, SQLException;
+
+	int insertManager(User user, Manager manager) throws IOException, SerialException, SQLException;
 
 	List<Role> fetchAllRoles();
 

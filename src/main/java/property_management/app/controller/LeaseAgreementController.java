@@ -1,8 +1,6 @@
 package property_management.app.controller;
 
-import property_management.app.dao.PropertyDao;
 import property_management.app.entities.LeaseAgreement;
-import property_management.app.entities.Property;
 import property_management.app.entities.User;
 import property_management.app.dao.LeaseAgreementDao;
 import org.springframework.beans.factory.annotation.Autowired;

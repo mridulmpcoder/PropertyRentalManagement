@@ -13,14 +13,18 @@ public interface PropertyDao {
 
 	int insertProperty(Property property) throws IOException, SerialException, SQLException;
 
-    public List<Property> getLatestProperties();
+	public List<Property> getLatestProperties();
 
 	public List<Property> getAllProperties();
-	
-    public List<Property> findProperties(String search, String location, List<String> facilities);
-    public Optional<Property> findPropertyById(int propertyId);
-    public List<String> findUniqueLocations();
-    
-    public Integer findPropertyIdByUserId(int userId);
+
+	public List<Property> findProperties(String search, String location, List<String> facilities);
+
+	public Optional<Property> findPropertyById(int propertyId);
+
+	public List<String> findUniqueLocations();
+
+	public Integer findPropertyIdByUserId(int userId);
+
+	Double getAmountByTenantId(Long tenantId);
 
 }

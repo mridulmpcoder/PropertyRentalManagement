@@ -20,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpSession;
 import property_management.app.dao.UserDao;
+import property_management.app.entities.Manager;
 import property_management.app.entities.Role;
 import property_management.app.entities.User;
 import property_management.utility.Password;
@@ -32,7 +33,6 @@ public class UserController {
 
 	@Autowired
 	UserDao userDao;
-	
 
 	@GetMapping("/openLoginPage")
 	public String openLoginPage() {
@@ -70,19 +70,23 @@ public class UserController {
 			if (newPasswordHash.equals(oldPwdHash)) {
 				session.setAttribute("user", user);
 				session.setAttribute("isLoggedIn", true);
+				if (user.getStatus().equals("A")) {
+					model.addAttribute("user", user);
 
-				
-				model.addAttribute("user", user);
+					int roleId = user.getRole().getRoleId();
+					if (roleId == 1) {
+						return "landlord_dashboard";
+					} else if (roleId == 2) {
+						return "manager_dashboard";
+					} else if (roleId == 3) {
 
-				int roleId = user.getRole().getRoleId();
-				if (roleId == 1) {
-					return "landlord_dashboard";
-				} else if (roleId == 2) {
-					return "manager_dashboard";
-				} else if (roleId == 3) {
-					
-	                return "redirect:/tenant/tenantDashboard"; // Use redirect to the tenant controller
+						return "redirect:/tenant/tenantDashboard"; // Use redirect to the tenant controller
+					}
+
+				} else {
+					attributes.addFlashAttribute("message", "You are not approved");
 				}
+
 			} else {
 				attributes.addFlashAttribute("message", "Incorrect Password");
 			}
@@ -124,8 +128,8 @@ public class UserController {
 	}
 
 	@PostMapping("/managerRegister")
-	public String managerRegister(@ModelAttribute User user, RedirectAttributes attributes)
-			throws IOException, SerialException, SQLException {
+	public String managerRegister(@ModelAttribute User user, @ModelAttribute Manager manager,
+			RedirectAttributes attributes) throws IOException, SerialException, SQLException {
 		user.setRole(new Role(2));
 		user.setStatus("P");
 
@@ -142,7 +146,7 @@ public class UserController {
 		user.setPasswordHash(passwordHash);
 		// Password Encryption completes
 
-		int result = userDao.insertUser(user);
+		int result = userDao.insertManager(user, manager);
 
 		if (result > 0) {
 			attributes.addFlashAttribute("message", "Registration Successful");
@@ -201,7 +205,7 @@ public class UserController {
 		byte[] imageBytes = sessionUser.getProfileImage().getBytes();
 		String base64Image = Base64.getEncoder().encodeToString(imageBytes);
 		model.addAttribute("profileImage", base64Image);
-		
+
 		byte[] idImageBytes = sessionUser.getIdProof().getBytes();
 		String idBase64Image = Base64.getEncoder().encodeToString(idImageBytes);
 		model.addAttribute("idProof", idBase64Image);
@@ -213,8 +217,9 @@ public class UserController {
 	// Handle the update form submission
 	@PostMapping("/update")
 	public String updateUserProfile(@ModelAttribute("user") User user,
-			@RequestParam("profileImage") MultipartFile profileImage,@RequestParam("idProof") MultipartFile idProof, HttpSession session,
-			RedirectAttributes redirectAttributes) throws SerialException, IOException, SQLException {
+			@RequestParam("profileImage") MultipartFile profileImage, @RequestParam("idProof") MultipartFile idProof,
+			HttpSession session, RedirectAttributes redirectAttributes)
+			throws SerialException, IOException, SQLException {
 
 		System.out.println("start" + profileImage);
 		// Retrieve user from session
@@ -241,7 +246,7 @@ public class UserController {
 			String base64Image = Base64.getEncoder().encodeToString(imageBytes);
 			session.setAttribute("profileImage", base64Image);
 		}
-		
+
 		if (idProof != null && !idProof.isEmpty()) {
 			sessionUser.setIdProof(idProof);
 			byte[] imageBytes = idProof.getBytes();
