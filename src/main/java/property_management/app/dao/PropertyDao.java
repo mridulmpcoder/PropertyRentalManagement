@@ -22,5 +22,8 @@ public interface PropertyDao {
     public List<String> findUniqueLocations();
     
     public Integer findPropertyIdByUserId(int userId);
+    
+//    Double getAmountByTenantId(Long tenantId);
+    
 
 }

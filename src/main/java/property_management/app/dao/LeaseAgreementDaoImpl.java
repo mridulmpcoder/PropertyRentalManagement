@@ -33,29 +33,42 @@ public class LeaseAgreementDaoImpl implements LeaseAgreementDao {
 
     @Override
     public LeaseAgreement getLeaseAgreementById(int leaseId) {
-        String sql = "SELECT * FROM lease_agreements WHERE lease_id = ?";
-        return jdbcTemplate.queryForObject(sql, new Object[]{leaseId}, new BeanPropertyRowMapper<>(LeaseAgreement.class));
+        try {
+            // SQL to fetch lease agreement by lease_id
+            String sql = "SELECT * FROM lease_agreements WHERE lease_id = ?";
+            
+            // Use custom LeaseAgreementRowMapper
+            LeaseAgreement leaseAgreement = jdbcTemplate.queryForObject(sql, 
+                new Object[]{leaseId}, 
+                new LeaseAgreementRowMapper());
+
+            return leaseAgreement;
+        } catch (Exception e) {
+            e.printStackTrace(); // Print exception details
+            return null; // Return null or handle as needed on error
+        }
     }
+
     
     // New method to get all lease agreements by user_id (tenant_id)
     @Override
     public List<LeaseAgreement> getLeaseAgreementsByUserId(int userId) {
         try {
-            // First, get tenant_id using user_id
-            String tenantSql = "SELECT tenant_id FROM tenants WHERE user_id = ?";
-            Integer tenantId = jdbcTemplate.queryForObject(tenantSql, new Object[]{userId}, Integer.class);
+            // SQL to directly fetch lease agreements associated with the user via tenant_id
+            String leaseSql = "select * from lease_agreements WHERE tenant_id = ?";
             
-            if (tenantId == null) {
-                return Collections.emptyList(); // No tenant found for the user_id
-            }
+            List<LeaseAgreement> leaseAgreements = jdbcTemplate.query(leaseSql, 
+                new Object[]{userId}, 
+                new LeaseAgreementRowMapper());
 
-            // Now, get lease agreements using tenant_id
-            String leaseSql = "SELECT * FROM lease_agreements WHERE tenant_id = ?";
-            return jdbcTemplate.query(leaseSql, new Object[]{tenantId}, new BeanPropertyRowMapper<>(LeaseAgreement.class));
+            System.out.println("Lease Agreements fetched: " + leaseAgreements); // Log fetched lease agreements
+            return leaseAgreements;
         } catch (Exception e) {
             e.printStackTrace(); // Print exception details
             return Collections.emptyList(); // Return an empty list on error
         }
     }
+
+
     
 }

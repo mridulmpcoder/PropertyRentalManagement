@@ -10,4 +10,12 @@ public interface TenantDao {
     void saveTenant(Tenant tenant);
     void updateTenant(Tenant tenant);
     void deleteTenant(int tenantId);
+	void assignTenantToProperty(int tenantId, int propertyId);
+    void removeTenantFromProperty(int tenantId, int propertyId);
 }
+
+
+
+
+ 
+ 

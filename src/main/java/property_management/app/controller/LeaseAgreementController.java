@@ -44,20 +44,39 @@ public class LeaseAgreementController {
    
     // Get lease agreements by user ID (logged-in user)
     @GetMapping("/myLeaseAgreements")
-    public String listLeaseAgreementsByUserId(@ModelAttribute("user") User user,HttpSession session, Model model) {
+    public String listLeaseAgreementsByUserId(@ModelAttribute("user") User user, HttpSession session, Model model) {
         User loggedInUser = (User) session.getAttribute("user"); // Get logged-in user from session
         if (loggedInUser != null) {
-
             List<LeaseAgreement> leaseAgreements = leaseAgreementDao.getLeaseAgreementsByUserId(loggedInUser.getUserId());
 
-            System.out.println("Lease Agreements for User ID " + loggedInUser.getUserId() + ": " + leaseAgreements); // Log the list
+            System.out.println("Fetched Lease Agreements: " + leaseAgreements);
+            
+            if (leaseAgreements == null || leaseAgreements.isEmpty()) {
+                System.out.println("No lease agreements found for User ID " + loggedInUser.getUserId());
+            } else {
+                System.out.println("Lease Agreements for User ID " + loggedInUser.getUserId() + ":");
+                for (LeaseAgreement lease : leaseAgreements) {
+                    System.out.println("Lease ID: " + lease.getLeaseId() +
+                                       ", Tenant ID: " + lease.getTenantId() +
+                                       ", Property ID: " + lease.getPropertyId() +
+                                       ", Lease Start Date: " + lease.getLeaseStartDate() +
+                                       ", Lease End Date: " + lease.getLeaseEndDate() +
+                                       ", Rent Amount: " + lease.getRentAmount() +
+                                       ", Deposit Amount: " + lease.getSecurityDeposit() +
+//                                       ", Payment Schedule: " + lease.getPaymentSchedule() +
+                                       ", Agreement Details: " + lease.getAgreementDetails());
+                }
+            }
 
             model.addAttribute("leaseAgreements", leaseAgreements);
         } else {
             model.addAttribute("errorMessage", "User not logged in.");
-            return "error_page"; // Handle error case
+            return "redirect:/user/openLoginPage"; // Redirect to the login page
         }
+
         return "lease_agreements"; // Returns the JSP page name
     }
+
+
     
 }

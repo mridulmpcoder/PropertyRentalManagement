@@ -11,29 +11,92 @@
     <meta name="description" content="Tenant Dashboard">
     <title>Tenant Dashboard</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/homestyle.css">
+    
+    <style>
+    	
+	/* Dropdown styling */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropbtn {
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover { background-color: #ddd; }
+
+.dropdown:hover .dropdown-content { display: block; }
+	
+    
+    </style>
+    
 </head>
 <body style="background-image: url('/images/buildings-silhouette-cityscape-background-modern-architecture-urban-city-landscape-vector.jpg');">
  
+ 
+ 	 <!-- Check for user session and cache control -->
+    <%
+        // Cache control
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
+        response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
+        response.setDateHeader("Expires", 0); // Proxies.
+
+        // Check if the user is logged in
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            response.sendRedirect("/user/openLoginPage");
+            return; // Stop processing the rest of the page
+        }
+    %>
+ 
+ 
 	<!-- Constant Navigation Bar -->
-	   <nav class="navbar">
-	       <div class="navbar-container">
-	           <a href="#" class="logo">Property Management</a>
-	           <ul class="nav-links">
-	               <li><a href="/">Home</a></li>
-	               <li><a href="/property/PropertyPage">Properties</a></li>
-	               <li><a href="/aboutUs">About Us</a></li>
-	               <li><a href="/contact">Contact</a></li>
-				   	
-				
+	<nav class="navbar">
+		<div class="navbar-container">
+			<a href="#" class="logo">Property Management</a>
+			<ul class="nav-links">
+				<li><a href="/">Home</a></li>
+				<li><a href="/property/PropertyPage">Properties</a></li>
+				<li><a href="/aboutUs">About Us</a></li>
+				<li><a href="/contact">Contact</a></li>
+							
 			<%
-			User loggedInUser = (User) session.getAttribute("loggedInUser");
 			if (loggedInUser != null) {
-				
+				String roleDashboard = "";
+				int roleId = loggedInUser.getRole().getRoleId();
+				if (roleId == 1) {
+					roleDashboard = "landlord_dashboard";
+				} else if (roleId == 2) {
+					roleDashboard = "manager_dashboard";
+				} else if (roleId == 3) {
+					roleDashboard = "tenantDashboard";
+				}
 			%>
 				<li class="dropdown">
 					<a href="#" class="dropbtn"><%= loggedInUser.getFirstName() %></a>
-					<div class="dropdown-content">
-						<a href="/user/dashboard">Dashboard</a>
+					<div class="udropdown-content">
+						<a href="/user/<%= roleDashboard %>">Dashboard</a>
 						<a href="/user/viewProfile">View Profile</a>
 						<a href="/user/logout">Logout</a>
 					</div>
@@ -45,39 +108,42 @@
 			<%
 			}
 			%>
-				
-	           </ul>
-	       </div>
-	   </nav>
+			</ul>
+		</div>
+	</nav>
  
     <!-- Dashboard Section -->
     <section class="dashboard-section">
         <div class="dashboard-container">
  
             <!-- View Property Card -->
-            <div class="dashboard-card">
-                <h2>View My Property</h2>
-                <p>Check the details of the property you're currently renting.</p>
-                <!-- <a href="/user/myProperty/1" class="btn-primary">View Property</a> -->
-                 <!-- View Property Card -->
-			    <%
-			        // Fetch the list of properties assigned to the logged-in user
-			        Integer propertyId = (Integer) request.getAttribute("propertyId");
-			        
-			        if (propertyId != null ) {
-			    %>
-			        <a href="/tenant/myPropertyDetails/<%= propertyId %>" class="btn-primary">View Property</a>
-			    <%
-			        } else {
-			    %>
-			        <p>You don't have a property assigned yet.</p>
-			    <%
-			        }
-			    %>
-			
- 
-            </div>
- 
+		<div class="dashboard-card">
+		    <h2>View My Property</h2>
+		    <p>Check the details of the property you're currently renting.</p>
+		    
+		    <%
+		        // Fetch the list of properties assigned to the logged-in user
+		        Integer propertyId = (Integer) request.getAttribute("propertyId");
+		        String status = (String) request.getAttribute("status");
+		
+		        // Check if propertyId is not null and status is "pending"
+		        if (propertyId != null && "pending".equals(status)) {
+		            // Redirect to another URL (modify the URL as needed)
+			%>
+		        <a href="/property/PropertyDetails/<%= propertyId %>" class="btn-primary">View Applied Property</a>
+		    <%		            
+		        } else if (propertyId != null) {
+		    %>
+		        <a href="/tenant/myPropertyDetails/<%= propertyId %>" class="btn-primary">View Property</a>
+		    <%
+		        } else {
+		    %>
+		        <p>You don't have a property assigned yet.</p>
+		    <%
+		        }
+		    %>
+		</div>
+
             <!-- Manage Lease Card -->
             <div class="dashboard-card">
                 <h2>Manage Lease</h2>
@@ -129,5 +195,10 @@
 	           <p>&copy; 2024 Property Management System. All Rights Reserved.</p>
 	       </div>
 	   </footer>
+	   
+	   
+	   
+	   
+	   
 </body>
 </html>

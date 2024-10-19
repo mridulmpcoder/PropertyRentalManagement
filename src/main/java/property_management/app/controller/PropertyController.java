@@ -30,6 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 import property_management.app.dao.PropertyDaoImpl;
@@ -81,16 +82,45 @@ public class PropertyController {
 		return "property_page"; // property_page.jsp
 	}
 
+//	@GetMapping("/PropertyDetails/{propertyId}")
+//	public String showPropertyDetails(@PathVariable int propertyId, Model model) {
+//		Optional<Property> optionalProperty = propertyDaoImpl.findPropertyById(propertyId);
+//		if (optionalProperty.isPresent()) {
+//			model.addAttribute("property", optionalProperty.get());
+//			return "property_details"; // Assuming 'property_details.jsp'
+//		}
+//		return "redirect:/PropertyPage"; // Redirect if property not found
+//	}
+
+	
 	@GetMapping("/PropertyDetails/{propertyId}")
-	public String showPropertyDetails(@PathVariable int propertyId, Model model) {
-		Optional<Property> optionalProperty = propertyDaoImpl.findPropertyById(propertyId);
-		if (optionalProperty.isPresent()) {
-			model.addAttribute("property", optionalProperty.get());
-			return "property_details"; // Assuming 'property_details.jsp'
-		}
-		return "redirect:/PropertyPage"; // Redirect if property not found
+	public String showPropertyDetails(@PathVariable int propertyId, @ModelAttribute("user") User user, Model model, HttpSession session, HttpServletRequest request) {
+	    Optional<Property> optionalProperty = propertyDaoImpl.findPropertyById(propertyId);
+	    User loggedInUser = (User) session.getAttribute("user");
+
+	    if (loggedInUser != null) {
+	        model.addAttribute("loggedInUser", loggedInUser);
+
+	        // Fetch property ID for the logged-in user
+	        Integer propertyID = propertyDaoImpl.findPropertyIdByUserId(loggedInUser.getUserId());
+
+	        // Add propertyID to the model
+	        model.addAttribute("propertyID", propertyID);
+	        request.setAttribute("propertyID", propertyID);
+
+	        System.out.println("Fetched Renting Property ID: " + propertyID);
+	    }
+
+	    if (optionalProperty.isPresent()) {
+	        model.addAttribute("property", optionalProperty.get());
+	        return "property_details"; // Assuming 'property_details.jsp'
+	    }
+	    
+	    return "redirect:/PropertyPage"; // Redirect if property not found
 	}
 
+	
+	
 //	@GetMapping("/PropertyDetails/{propertyId}")
 //
 //	public String showPropertyDetails(@PathVariable int propertyId, Model model, HttpSession session) {
@@ -134,23 +164,7 @@ public class PropertyController {
 //	    return "redirect:/property/PropertyPage"; // Redirect if property not found
 //	}
 
-	@GetMapping("/TenantHomePage")
 
-	public String openTenantHomePage(Model model, HttpSession session) {
-
-		List<Property> latestProperties = propertyDaoImpl.getLatestProperties();
-
-		model.addAttribute("latestProperties", latestProperties);
-
-		// Get logged-in user from session
-
-		User loggedInUser = (User) session.getAttribute("loggedInUser");
-
-		model.addAttribute("loggedInUser", loggedInUser);
-
-		return "home";
-
-	}
 
 	@GetMapping("/openAddProperty")
 	public String openAddProperty(Model model) {

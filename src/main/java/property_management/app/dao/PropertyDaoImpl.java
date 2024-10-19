@@ -31,6 +31,7 @@ public class PropertyDaoImpl implements PropertyDao{
 	{
 		String sql = "SELECT p.*,pt.type_name AS type FROM property p "
 					+ "JOIN property_type pt ON p.type_id = pt.type_id "
+		            + "WHERE p.status = 'active' " // Add this line
 					+ "ORDER BY p.CreatedAt DESC LIMIT 5";
 		
 		return jdbcTemplate.query(sql, new PropertyRowMapper());
@@ -41,7 +42,8 @@ public class PropertyDaoImpl implements PropertyDao{
 	// Fetch all properties
 	public List<Property> getAllProperties() {
 	    String sql = "SELECT p.*, pt.type_name AS type FROM property p "
-	               + "JOIN property_type pt ON p.type_id = pt.type_id";
+	               + "JOIN property_type pt ON p.type_id = pt.type_id"
+	               + "WHERE p.status = 'active' "; // Add this line
 	    return jdbcTemplate.query(sql, new PropertyRowMapper());
 	}
 
@@ -52,7 +54,7 @@ public class PropertyDaoImpl implements PropertyDao{
 	    StringBuilder sql = new StringBuilder(
 	        "SELECT p.*, pt.type_name AS type FROM property p " +
 	        "JOIN property_type pt ON p.type_id = pt.type_id " +
-	        "WHERE (" +
+	        "WHERE p.status = 'active' AND (" + // Add this line
 	        "p.title LIKE ? OR " +
 	        "p.description LIKE ? OR " +
 	        "p.city LIKE ? OR " +
@@ -181,4 +183,17 @@ public class PropertyDaoImpl implements PropertyDao{
 				property.isAirConditioning(), property.isElevator(), property.isSecuritySystem(), property.isInternet(),
 				property.isFurnished(), propertyImageBytes); // Blob for property image
 	}
+    
+    
+//    @Override
+//	public Double getAmountByTenantId(Long tenantId) {
+//	    String sql = "SELECT Price FROM Property WHERE tenant_id = ?"; // Adjust based on the actual column name
+//	    try {
+//	        return jdbcTemplate.queryForObject(sql, new Object[]{tenantId}, Double.class);
+//	    } catch (EmptyResultDataAccessException e) {
+//	        return null; // Or handle this case as needed
+//	    }
+//	}
+    
+    
 }
