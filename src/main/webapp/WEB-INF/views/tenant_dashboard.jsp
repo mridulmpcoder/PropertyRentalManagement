@@ -7,15 +7,73 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Tenant Dashboard">
-<title>Tenant Dashboard</title>
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/css/homestyle.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tenant Dashboard">
+    <title>Tenant Dashboard</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/homestyle.css">
+    
+    <style>
+    	
+	/* Dropdown styling */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropbtn {
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover { background-color: #ddd; }
+
+.dropdown:hover .dropdown-content { display: block; }
+	
+    
+    </style>
+    
 </head>
-<body
-	style="background-image: url('/images/buildings-silhouette-cityscape-background-modern-architecture-urban-city-landscape-vector.jpg');">
+<body style="background-image: url('/images/buildings-silhouette-cityscape-background-modern-architecture-urban-city-landscape-vector.jpg');">
+ 
+ 
+ 	 <!-- Check for user session and cache control -->
+    <%
+        // Cache control
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
+        response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
+        response.setDateHeader("Expires", 0); // Proxies.
+
+        // Check if the user is logged in
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            response.sendRedirect("/user/openLoginPage");
+            return; // Stop processing the rest of the page
+        }
+    %>
+ 
+ 
+
+
 
 	<!-- Constant Navigation Bar -->
 	<nav class="navbar">
@@ -27,111 +85,124 @@
 				<li><a href="/aboutUs">About Us</a></li>
 				<li><a href="/contact">Contact</a></li>
 
-
-				<%
-				User loggedInUser = (User) session.getAttribute("loggedInUser");
-				if (loggedInUser != null) {
-				%>
-				<li class="dropdown"><a href="#" class="dropbtn"><%=loggedInUser.getFirstName()%></a>
-					<div class="dropdown-content">
-						<a href="/user/dashboard">Dashboard</a> <a
-							href="/user/viewProfile">View Profile</a> <a href="/user/logout">Logout</a>
-					</div></li>
-				<%
-				} else {
-				%>
-				<li><a href="/user/openLoginPage" class="login-btn">Login</a></li>
-				<%
+							
+			<%
+			if (loggedInUser != null) {
+				String roleDashboard = "";
+				int roleId = loggedInUser.getRole().getRoleId();
+				if (roleId == 1) {
+					roleDashboard = "landlord_dashboard";
+				} else if (roleId == 2) {
+					roleDashboard = "manager_dashboard";
+				} else if (roleId == 3) {
+					roleDashboard = "tenantDashboard";
 				}
-				%>
-
+			%>
+				<li class="dropdown">
+					<a href="#" class="dropbtn"><%= loggedInUser.getFirstName() %></a>
+					<div class="udropdown-content">
+						<a href="/user/<%= roleDashboard %>">Dashboard</a>
+						<a href="/user/viewProfile">View Profile</a>
+						<a href="/user/logout">Logout</a>
+					</div>
+				</li>
+			<%
+			} else {
+			%>
+				<li><a href="/user/openLoginPage" class="login-btn">Login</a></li>
+			<%
+			}
+			%>
 			</ul>
 		</div>
 	</nav>
-
-	<!-- Dashboard Section -->
-	<section class="dashboard-section">
-		<div class="dashboard-container">
-
-			<!-- View Property Card -->
-			<div class="dashboard-card">
-				<h2>View My Property</h2>
-				<p>Check the details of the property you're currently renting.</p>
-				<!-- <a href="/user/myProperty/1" class="btn-primary">View Property</a> -->
-				<!-- View Property Card -->
-				<%
-				// Fetch the list of properties assigned to the logged-in user
-				Integer propertyId = (Integer) request.getAttribute("propertyId");
-
-				if (propertyId != null) {
-				%>
-				<a href="/tenant/myPropertyDetails/<%=propertyId%>"
-					class="btn-primary">View Property</a>
-				<%
-				} else {
-				%>
-				<p>You don't have a property assigned yet.</p>
-				<%
-				}
-				%>
-
-
-			</div>
-
-			<!-- Manage Lease Card -->
-			<div class="dashboard-card">
-				<h2>Manage Lease</h2>
-				<p>Access and review your lease agreement.</p>
-				<a href="/lease-agreements/myLeaseAgreements" class="btn-primary">View
-					Lease Agreement</a>
-			</div>
-
-			<!-- Payments & Invoices Card -->
-			<div class="dashboard-card">
-				<h2>Payments & Invoices</h2>
-				<p>Make rental payments and review invoices.</p>
-				<a href="/tenant/lastPayment?tenantId=${payment.tenantId}"
-					class="btn-primary">Make Payment</a>
-			</div>
-
-
-			<!-- Maintenance Requests Card -->
-			<div class="dashboard-card">
-				<h2>Request Maintenance</h2>
-				<p>Submit a request for maintenance or repairs.</p>
-				<a href="/tenant/maintenanceRequest" class="btn-primary">Request
-					Maintenance</a>
-			</div>
-
-			<!-- Profile & Settings Card -->
-			<div class="dashboard-card">
-				<h2>Profile & Settings</h2>
-				<p>View and update your profile information.</p>
-				<a href="/user/viewProfile" class="btn-primary">Profile</a>
-			</div>
-
+ 
+    <!-- Dashboard Section -->
+    <section class="dashboard-section">
+        <div class="dashboard-container">
+ 
+            <!-- View Property Card -->
+		<div class="dashboard-card">
+		    <h2>View My Property</h2>
+		    <p>Check the details of the property you're currently renting.</p>
+		    
+		    <%
+		        // Fetch the list of properties assigned to the logged-in user
+		        Integer propertyId = (Integer) request.getAttribute("propertyId");
+		        String status = (String) request.getAttribute("status");
+		
+		        // Check if propertyId is not null and status is "pending"
+		        if (propertyId != null && "pending".equals(status)) {
+		            // Redirect to another URL (modify the URL as needed)
+			%>
+		        <a href="/property/PropertyDetails/<%= propertyId %>" class="btn-primary">View Applied Property</a>
+		    <%		            
+		        } else if (propertyId != null) {
+		    %>
+		        <a href="/tenant/myPropertyDetails/<%= propertyId %>" class="btn-primary">View Property</a>
+		    <%
+		        } else {
+		    %>
+		        <p>You don't have a property assigned yet.</p>
+		    <%
+		        }
+		    %>
 		</div>
-	</section>
 
+            <!-- Manage Lease Card -->
+            <div class="dashboard-card">
+                <h2>Manage Lease</h2>
+                <p>Access and review your lease agreement.</p>
+                <a href="/lease-agreements/myLeaseAgreements" class="btn-primary">View Lease Agreement</a>
+            </div>
+ 
+            <!-- Payments & Invoices Card -->
+            <div class="dashboard-card">
+                <h2>Payments & Invoices</h2>
+                <p>Make rental payments and review invoices.</p>
+                <a href="/tenant/paymentPage" class="btn-primary">Make Payment</a>
+            </div>
+ 
+            <!-- Maintenance Requests Card -->
+            <div class="dashboard-card">
+                <h2>Request Maintenance</h2>
+                <p>Submit a request for maintenance or repairs.</p>
+                <a href="/tenant/maintenanceRequest" class="btn-primary">Request Maintenance</a>
+            </div>
+ 
+            <!-- Profile & Settings Card -->
+            <div class="dashboard-card">
+                <h2>Profile & Settings</h2>
+                <p>View and update your profile information.</p>
+                <a href="/profile" class="btn-primary">Profile</a>
+            </div>
+ 
+        </div>
+    </section>
+ 
 	<!-- Footer Section -->
-	<footer class="footer">
-		<div class="footer-content">
-			<div class="footer-left">
-				<h3>Property Management</h3>
-				<p>Your one-stop solution for managing and finding properties.</p>
-			</div>
-			<div class="footer-right">
-				<ul class="social-icons">
-					<li><a href="#"><i class="fab fa-facebook"></i></a></li>
-					<li><a href="#"><i class="fab fa-twitter"></i></a></li>
-					<li><a href="#"><i class="fab fa-instagram"></i></a></li>
-					<li><a href="#"><i class="fab fa-linkedin"></i></a></li>
-				</ul>
-			</div>
-		</div>
-		<div class="footer-bottom">
-			<p>&copy; 2024 Property Management System. All Rights Reserved.</p>
-		</div>
-	</footer>
+	   <footer class="footer">
+	       <div class="footer-content">
+	           <div class="footer-left">
+	               <h3>Property Management</h3>
+	               <p>Your one-stop solution for managing and finding properties.</p>
+	           </div>
+	           <div class="footer-right">
+	               <ul class="social-icons">
+	                   <li><a href="#"><i class="fab fa-facebook"></i></a></li>
+	                   <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+	                   <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+	                   <li><a href="#"><i class="fab fa-linkedin"></i></a></li>
+	               </ul>
+	           </div>
+	       </div>
+	       <div class="footer-bottom">
+	           <p>&copy; 2024 Property Management System. All Rights Reserved.</p>
+	       </div>
+	   </footer>
+	   
+	   
+	   
+	  
 </body>
 </html>

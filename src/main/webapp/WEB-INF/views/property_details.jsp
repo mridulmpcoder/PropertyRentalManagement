@@ -1,5 +1,11 @@
 <%@ page import="property_management.app.entities.Property"%>
-<%@page import="property_management.app.entities.User"%>
+<%@ page import="property_management.app.entities.User"%>
+<%@ page import="property_management.app.entities.Tenant"%>
+<%
+    Integer propertyID = (Integer) request.getAttribute("propertyID"); // Retrieve propertyID if available
+    User loggedInUser = (User) session.getAttribute("loggedInUser");
+    Property property = (Property) request.getAttribute("property");
+%>
 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
@@ -12,14 +18,15 @@
 <meta name="description"
 	content="View Property Details - Tenant Management System" />
 <title>View Property | Tenant Management System</title>
-    <link href="${pageContext.request.contextPath}/css/homestyle.css" rel="stylesheet"/>
+<link href="${pageContext.request.contextPath}/css/homestyle.css"
+	rel="stylesheet" />
+	<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <style>
-/* property-details.css */
-
 /* Body styling */
 body {
-	background-image: url("/images/b70e6ixf.png");
-	/* Replace with your actual image path */
+	background-image:
+		url("/images/wallpapersden.com_gradient-landscape-4k-illustration_2048x1512.jpg");
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
@@ -67,18 +74,31 @@ header {
 	margin: 20px 0;
 }
 
-.btn-back {
+.btn-back, .btn-rent {
 	display: inline-block;
 	padding: 10px 20px;
-	background-color: #007bff;
-	color: white;
-	text-decoration: none;
 	border-radius: 5px;
 	transition: background-color 0.3s;
 }
 
+.btn-back {
+	background-color: #007bff;
+	color: white;
+	text-decoration: none;
+}
+
 .btn-back:hover {
 	background-color: #0056b3;
+}
+
+.btn-rent {
+	background-color: #28a745;
+	color: white;
+	text-decoration: none;
+}
+
+.btn-rent:hover {
+	background-color: #218838;
 }
 
 .my-facility-list {
@@ -95,44 +115,38 @@ header {
 	margin-right: 10px;
 }
 
-.social-icons {
-	list-style: none;
-	padding: 0;
+.modal {
+	display: none;
+	position: fixed;
+	z-index: 1;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	background-color: rgba(0, 0, 0, 0.4);
 }
 
-.social-icons li {
-	display: inline;
-	margin-right: 10px;
+.modal-content {
+	background-color: #fefefe;
+	margin: 15% auto;
+	padding: 20px;
+	border: 1px solid #888;
+	width: 80%;
 }
 
-body {
-	background-image:
-		url("/images/wallpapersden.com_gradient-landscape-4k-illustration_2048x1512.jpg");
-	/* Replace with your actual image path */
-	background-size: cover;
-	background-position: center;
-	background-repeat: no-repeat;
-	font-family: "Arial", sans-serif;
-	color: #333;
-	margin: 0;
-	padding: 0;
-	line-height: 1.6;
-	min-height: 200vh;
-	overflow-y: auto;
+.close {
+	color: #aaa;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
 }
 
-.social-icons {
-	list-style: none;
-	padding: 0;
-}
-
-.social-icons li {
-	display: inline;
-	margin-right: 10px;
+.close:hover, .close:focus {
+	color: black;
+	cursor: pointer;
 }
 </style>
-<link rel="stylesheet" href="/property-details.css" />
-<!-- Link to external CSS -->
 </head>
 <body>
 	<!-- Constant Navigation Bar -->
@@ -144,37 +158,31 @@ body {
 				<li><a href="/property/PropertyPage">Properties</a></li>
 				<li><a href="/aboutUs">About Us</a></li>
 				<li><a href="/contact">Contact</a></li>
-						   	
-				
-			<%
-			User loggedInUser = (User) session.getAttribute("loggedInUser");
-			if (loggedInUser != null) {
-				String roleDashboard = "";
-				int roleId = loggedInUser.getRole().getRoleId();
-				if (roleId == 1) {
-					roleDashboard = "landlord_dashboard";
-				} else if (roleId == 2) {
-					roleDashboard = "manager_dashboard";
-				} else if (roleId == 3) {
-					roleDashboard = "tenant_dashboard";
-				}
-			%>
-				<li class="dropdown">
-					<a href="#" class="dropbtn"><%= loggedInUser.getFirstName() %></a>
-					<div class="dropdown-content">
-						<a href="/user/dashboard">Dashboard</a>
-						<a href="/user/viewProfile">View Profile</a>
-						<a href="/user/logout">Logout</a>
-					</div>
-				</li>
-			<%
-			} else {
-			%>
+
+				<%
+				if (loggedInUser != null) {
+					String roleDashboard = "";
+					int roleId = loggedInUser.getRole().getRoleId();
+					if (roleId == 1) {
+						roleDashboard = "landlord_dashboard";
+					} else if (roleId == 2) {
+						roleDashboard = "manager_dashboard";
+					} else if (roleId == 3) {
+						roleDashboard = "tenantDashboard";
+					}
+				%>
+				<li class="dropdown"><a href="#" class="dropbtn"><%=loggedInUser.getFirstName()%></a>
+					<div class="udropdown-content">
+						<a href="/user/<%=roleDashboard%>">Dashboard</a> <a
+							href="/user/viewProfile">View Profile</a> <a href="/user/logout">Logout</a>
+					</div></li>
+				<%
+				} else {
+				%>
 				<li><a href="/user/openLoginPage" class="login-btn">Login</a></li>
-			<%
-			}
-			%>
-				
+				<%
+				}
+				%>
 			</ul>
 		</div>
 	</nav>
@@ -186,7 +194,6 @@ body {
 	<div class="content">
 		<div class="my-property-details">
 			<%
-			Property property = (Property) request.getAttribute("property");
 			if (property != null) {
 			%>
 
@@ -212,33 +219,24 @@ body {
 					<strong>Facilities:</strong>
 				</p>
 				<ul class="my-facility-list">
-					<li class="facility-item"><span class="facility-icon">
-							<%=property.isSwimmingPool() ? "✔" : "✖"%>
-					</span> Swimming Pool</li>
-					<li class="facility-item"><span class="facility-icon">
-							<%=property.isGym() ? "✔" : "✖"%>
-					</span> Gym</li>
-					<li class="facility-item"><span class="facility-icon">
-							<%=property.isParking() ? "✔" : "✖"%>
-					</span> Parking</li>
-					<li class="facility-item"><span class="facility-icon">
-							<%=property.isGarden() ? "✔" : "✖"%>
-					</span> Garden</li>
-					<li class="facility-item"><span class="facility-icon">
-							<%=property.isAirConditioning() ? "✔" : "✖"%>
-					</span> Air Conditioning</li>
-					<li class="facility-item"><span class="facility-icon">
-							<%=property.isElevator() ? "✔" : "✖"%>
-					</span> Elevator</li>
-					<li class="facility-item"><span class="facility-icon">
-							<%=property.isSecuritySystem() ? "✔" : "✖"%>
-					</span> Security System</li>
-					<li class="facility-item"><span class="facility-icon">
-							<%=property.isInternet() ? "✔" : "✖"%>
-					</span> Internet</li>
-					<li class="facility-item"><span class="facility-icon">
-							<%=property.isFurnished() ? "✔" : "✖"%>
-					</span> Furnished</li>
+					<li class="facility-item"><span class="facility-icon"><%=property.isSwimmingPool() ? "✔" : "✖"%></span>
+						Swimming Pool</li>
+					<li class="facility-item"><span class="facility-icon"><%=property.isGym() ? "✔" : "✖"%></span>
+						Gym</li>
+					<li class="facility-item"><span class="facility-icon"><%=property.isParking() ? "✔" : "✖"%></span>
+						Parking</li>
+					<li class="facility-item"><span class="facility-icon"><%=property.isGarden() ? "✔" : "✖"%></span>
+						Garden</li>
+					<li class="facility-item"><span class="facility-icon"><%=property.isAirConditioning() ? "✔" : "✖"%></span>
+						Air Conditioning</li>
+					<li class="facility-item"><span class="facility-icon"><%=property.isElevator() ? "✔" : "✖"%></span>
+						Elevator</li>
+					<li class="facility-item"><span class="facility-icon"><%=property.isSecuritySystem() ? "✔" : "✖"%></span>
+						Security System</li>
+					<li class="facility-item"><span class="facility-icon"><%=property.isInternet() ? "✔" : "✖"%></span>
+						Internet</li>
+					<li class="facility-item"><span class="facility-icon"><%=property.isFurnished() ? "✔" : "✖"%></span>
+						Furnished</li>
 				</ul>
 			</div>
 			<%
@@ -249,29 +247,92 @@ body {
 			}
 			%>
 
-			<a href="/property/PropertyPage" class="btn-back">Back</a>
+			<div class="button-container" style="display: flex; justify-content: space-between;">
+			    <a href="javascript:void(0);" class="btn-back" onclick="window.history.back();">Back</a>
+			
+			    <% if (loggedInUser != null && propertyID != null) { %>
+			        <!-- If the user is logged in and already renting a property -->
+			        <a href="javascript:void(0);" class="btn-rent" onclick="openAlreadyRentingModal();">Already Renting</a>
+			    <% } else if (loggedInUser != null) { %>
+			        <!-- If the user is logged in but not renting a property -->
+			        <a href="javascript:void(0);" class="btn-rent" onclick="openConfirmationModal();">Rent Now</a>
+			    <% } else { %>
+			        <!-- If the user is not logged in -->
+			        <a href="/user/openLoginPage" class="btn-rent">Login to Rent</a>
+			    <% } %>
+			</div>
+
+
+			<!-- Rent Confirmation Modal -->
+			<div id="rentConfirmationModal" class="modal">
+			    <div class="modal-content">
+			        <span class="close" onclick="closeConfirmationModal()">&times;</span>
+			        <h2>Confirm Rent</h2>
+			        <p>Are you sure you want to rent this property?</p>
+			        <form id="rentalRequestForm" action="/tenant/addTenantDetails "method="GET">
+			            <input type="hidden" name="propertyId" value="<%=property.getPropertyId()%>" />
+			            <button type="submit" class="btn-rent">Confirm</button>
+			            <button type="button" class="btn-back" onclick="closeConfirmationModal()">Cancel</button>
+			        </form>
+			    </div>
+			</div>
+
+
+			<!-- Already Renting Modal -->
+			<div id="alreadyRentingModal" class="modal">
+			    <div class="modal-content">
+			        <span class="close" onclick="closeAlreadyRentingModal()">&times;</span>
+			        <h2>Already Renting</h2>
+			        <p>You are already renting this property.</p>
+			        <button type="button" class="btn-back" onclick="closeAlreadyRentingModal()">Close</button>
+			    </div>
+			</div>
+
+
 		</div>
 	</div>
 
-	<!-- Footer Section -->
-	<footer class="footer">
-		<div class="footer-content">
-			<div class="footer-left">
-				<h3>Property Management</h3>
-				<p>Your one-stop solution for managing and finding properties.</p>
-			</div>
-			<div class="footer-right">
-				<ul class="social-icons">
-					<li><a href="#"><i class="fab fa-facebook"></i></a></li>
-					<li><a href="#"><i class="fab fa-twitter"></i></a></li>
-					<li><a href="#"><i class="fab fa-instagram"></i></a></li>
-					<li><a href="#"><i class="fab fa-linkedin"></i></a></li>
-				</ul>
-			</div>
-		</div>
-		<div class="footer-bottom">
-			<p>&copy; 2024 Property Management System. All Rights Reserved.</p>
-		</div>
-	</footer>
+	<script>
+	
+	function redirectAfterSubmit(event) {
+	    // Prevent the form from submitting normally
+	    event.preventDefault();
+	    
+	    // Submit the form via AJAX
+	    fetch('/tenant/submitRentalRequest', {
+	        method: 'POST',
+	        body: new FormData(event.target)
+	    }).then(response => {
+	        if (response.ok) {
+	            // Redirect to the tenant registration page after successful submission
+	            window.location.href = "/tenant/addTenantDetails";  // Your target URL
+	        } else {
+	            alert('There was an error submitting your request. Please try again.');
+	        }
+	    }).catch(error => {
+	        console.error('Error:', error);
+	        alert('An error occurred while processing your request.');
+	    });
+
+	    return false; // Prevent normal form submission
+	}
+	
+	function openConfirmationModal() {
+	    document.getElementById("rentConfirmationModal").style.display = "block";
+	}
+
+	function closeConfirmationModal() {
+	    document.getElementById("rentConfirmationModal").style.display = "none";
+	}
+
+	function openAlreadyRentingModal() {
+	    document.getElementById("alreadyRentingModal").style.display = "block";
+	}
+
+	function closeAlreadyRentingModal() {
+	    document.getElementById("alreadyRentingModal").style.display = "none";
+	}
+
+	</script>
 </body>
 </html>

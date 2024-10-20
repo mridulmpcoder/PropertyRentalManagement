@@ -82,13 +82,7 @@
 .right-arrow {
 	right: 10px;
 }
-</style>
 
-
-</head>
-<body>
-
-	<style>
 	
 	/* Dropdown styling */
 .dropdown {
@@ -199,8 +193,7 @@
 				<li><a href="/property/PropertyPage">Properties</a></li>
 				<li><a href="/aboutUs">About Us</a></li>
 				<li><a href="/contact">Contact</a></li>
-				
-				
+							
 			<%
 			User loggedInUser = (User) session.getAttribute("loggedInUser");
 			if (loggedInUser != null) {
@@ -211,13 +204,13 @@
 				} else if (roleId == 2) {
 					roleDashboard = "manager_dashboard";
 				} else if (roleId == 3) {
-					roleDashboard = "tenant_dashboard";
+					roleDashboard = "tenantDashboard";
 				}
 			%>
 				<li class="dropdown">
 					<a href="#" class="dropbtn"><%= loggedInUser.getFirstName() %></a>
-					<div class="dropdown-content">
-						<a href="/user/dashboard">Dashboard</a>
+					<div class="udropdown-content">
+						<a href="/user/<%= roleDashboard %>">Dashboard</a>
 						<a href="/user/viewProfile">View Profile</a>
 						<a href="/user/logout">Logout</a>
 					</div>
@@ -229,10 +222,10 @@
 			<%
 			}
 			%>
-				
 			</ul>
 		</div>
 	</nav>
+
 
 	<div class="content">
 		<!-- Banner Section with Poster -->
@@ -243,7 +236,7 @@
 				<h1>Find Your Dream Property</h1>
 				<p>Search from a wide range of properties that suit your
 					preferences and budget.</p>
-				<a href="/PropertyPage" class="btn-primary">Explore Properties</a>
+				<a href="/property/PropertyPage" class="btn-primary">Explore Properties</a>
 			</div>
 		</section>
 

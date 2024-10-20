@@ -1,5 +1,7 @@
 <%@ page import="java.util.List"%>
 <%@ page import="property_management.app.entities.LeaseAgreement"%>
+<%@page import="property_management.app.entities.User"%>
+
 
 <%
 List<LeaseAgreement> leaseAgreements = (List<LeaseAgreement>) request.getAttribute("leaseAgreements");
@@ -14,8 +16,8 @@ List<LeaseAgreement> leaseAgreements = (List<LeaseAgreement>) request.getAttribu
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Lease Agreements</title>
-<link href="${pageContext.request.contextPath}/styles.css"
-	rel="stylesheet" />
+<link href="${pageContext.request.contextPath}/css/homestyle.css" rel="stylesheet"/>
+
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
@@ -47,21 +49,63 @@ List<LeaseAgreement> leaseAgreements = (List<LeaseAgreement>) request.getAttribu
 </head>
 <body>
 
+	
+ 	 <!-- Check for user session and cache control -->
+    <%
+        // Cache control
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
+        response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
+        response.setDateHeader("Expires", 0); // Proxies.
+
+        // Check if the user is logged in
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            response.sendRedirect("/user/openLoginPage");
+            return; // Stop processing the rest of the page
+        }
+    %>
+ 
+
 	<!-- Constant Navigation Bar -->
 	<nav class="navbar">
 		<div class="navbar-container">
 			<a href="#" class="logo">Property Management</a>
 			<ul class="nav-links">
-				<li><a href="/TenantHomePage">Home</a></li>
-				<li><a href="/properties">Properties</a></li>
-				<li><a href="/lease-agreements">Lease Agreements</a></li>
-				<li><a href="/user/AboutUs">About Us</a></li>
+				<li><a href="/">Home</a></li>
+				<li><a href="/property/PropertyPage">Properties</a></li>
+				<li><a href="/aboutUs">About Us</a></li>
 				<li><a href="/contact">Contact</a></li>
+							
+			<%
+			if (loggedInUser != null) {
+				String roleDashboard = "";
+				int roleId = loggedInUser.getRole().getRoleId();
+				if (roleId == 1) {
+					roleDashboard = "landlord_dashboard";
+				} else if (roleId == 2) {
+					roleDashboard = "manager_dashboard";
+				} else if (roleId == 3) {
+					roleDashboard = "tenantDashboard";
+				}
+			%>
+				<li class="dropdown">
+					<a href="#" class="dropbtn"><%= loggedInUser.getFirstName() %></a>
+					<div class="udropdown-content">
+						<a href="/user/<%= roleDashboard %>">Dashboard</a>
+						<a href="/user/viewProfile">View Profile</a>
+						<a href="/user/logout">Logout</a>
+					</div>
+				</li>
+			<%
+			} else {
+			%>
 				<li><a href="/user/openLoginPage" class="login-btn">Login</a></li>
+			<%
+			}
+			%>
 			</ul>
 		</div>
 	</nav>
-
 	<div class="content">
 		<!-- Lease Agreements Section -->
 		<section class="lease-agreements-section">
@@ -79,8 +123,7 @@ List<LeaseAgreement> leaseAgreements = (List<LeaseAgreement>) request.getAttribu
 						<th>Lease End Date</th>
 						<th>Rent Amount</th>
 						<th>Deposit Amount</th>
-						<th>Payment Schedule</th>
-						<th>Details</th>
+						<th>Status</th>
 						<th>Action</th>
 					</tr>
 				</thead>
@@ -101,14 +144,13 @@ List<LeaseAgreement> leaseAgreements = (List<LeaseAgreement>) request.getAttribu
 						<td><%=lease.getLeaseId()%></td>
 						<td><%=lease.getTenantId()%></td>
 						<td><a
-							href="${pageContext.request.contextPath}/user/PropertyDetails/<%= lease.getPropertyId() %>">Property
+							href="${pageContext.request.contextPath}/property/PropertyDetails/<%= lease.getPropertyId() %>">Property
 								Details</a></td>
 						<td><%=lease.getLeaseStartDate()%></td>
 						<td><%=lease.getLeaseEndDate()%></td>
 						<td><%=lease.getRentAmount()%></td>
-						<td><%=lease.getDepositAmount()%></td>
-						<td><%=lease.getPaymentSchedule()%></td>
-						<td><%=lease.getAgreementDetails()%></td>
+						<td><%=lease.getSecurityDeposit()%></td>
+						<td><%=lease.getStatus()%></td>
 						<td><a
 							href="<%=request.getContextPath() + "/lease-agreements/" + lease.getLeaseId()%>"
 							class="btn-secondary">View Details</a></td>

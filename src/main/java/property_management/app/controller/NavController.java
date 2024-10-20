@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.servlet.http.HttpSession;
@@ -25,12 +26,12 @@ public class NavController {
 	}
 
 	@GetMapping("/")
-	public String showHomePage(Model model, HttpSession session) {
+	public String showHomePage(@ModelAttribute("user") User user,Model model, HttpSession session) {
 	    List<Property> latestProperties = propertyDao.getLatestProperties();
 	    model.addAttribute("latestProperties", latestProperties);
 	    
 	    // Pass logged-in user data to the view
-	    User loggedInUser = (User) session.getAttribute("loggedInUser");
+	    User loggedInUser = (User) session.getAttribute("user");
 	    model.addAttribute("loggedInUser", loggedInUser);
 	    
 	    return "home";

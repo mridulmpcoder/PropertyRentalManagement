@@ -10,6 +10,11 @@
 	</head>
 <body>
 
+	<%@include file="header.jsp" %>
+	
+	
+	<div class="content">
+
 	<form action="/user/login" method="post">
 		<input type="text" name="username" placeholder="Enter username" /><br /> 
 		<input type="password" name="password" placeholder="Enter password" /><br />
@@ -18,9 +23,12 @@
 		<p>Click <a href = "/user/openTenantRegistrationPage">here</a> to register as Tenant</p>
 		<p>Click <a href = "/user/openManagerRegistrationPage">here</a> to register as Manager</p>
 	</form>
-	
+	</div>
 	
 	
 	<%@include file="message.jsp" %>
+	
+	<%@include file="footer.jsp" %>
+	
 </body>
 </html>

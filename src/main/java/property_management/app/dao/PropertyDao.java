@@ -17,6 +17,7 @@ public interface PropertyDao {
 
 	public List<Property> getAllProperties();
 
+
 	public List<Property> findProperties(String search, String location, List<String> facilities);
 
 	public Optional<Property> findPropertyById(int propertyId);

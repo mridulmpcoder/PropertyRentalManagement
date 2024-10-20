@@ -10,6 +10,13 @@
 </head>
 <body>
 
+	
+
+	<%@include file="header.jsp" %>
+	
+
+
+
 	<h1>User Profile</h1>
 	<table>
 		<tr>

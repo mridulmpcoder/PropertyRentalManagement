@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import property_management.app.dao.PropertyDao;
 import property_management.app.dao.UserDao;
 import property_management.app.entities.Manager;
 import property_management.app.entities.Role;
@@ -69,6 +71,8 @@ public class UserController {
 
 			if (newPasswordHash.equals(oldPwdHash)) {
 				session.setAttribute("user", user);
+				session.setAttribute("loggedInUser", user);
+
 				session.setAttribute("isLoggedIn", true);
 				if (user.getStatus().equals("A")) {
 					model.addAttribute("user", user);
@@ -85,6 +89,7 @@ public class UserController {
 
 				} else {
 					attributes.addFlashAttribute("message", "You are not approved");
+
 				}
 
 			} else {
@@ -272,5 +277,30 @@ public class UserController {
 		session.invalidate();
 		return "user_login"; // JSP file name without extension
 	}
+	
+	private final PropertyDao propertyDao;
+
+	@Autowired
+	public UserController(PropertyDao propertyDao) {
+		this.propertyDao = propertyDao;
+	}
+	
+	@GetMapping("/tenantDashboard")
+	public String tenantDashboard(@ModelAttribute("user") User user,Model model, HttpSession session, HttpServletRequest request) {
+	    User loggedInUser = (User) session.getAttribute("user");
+	    if (loggedInUser != null) {
+	        model.addAttribute("loggedInUser", loggedInUser);
+
+	        // Fetch property ID for the logged-in user
+	        Integer propertyId = propertyDao.findPropertyIdByUserId(loggedInUser.getUserId());
+		    model.addAttribute("propertyId", propertyId);
+
+	        // Set propertyId as a request attribute
+	        System.out.println("Fetched Property ID: " + propertyId);
+	        request.setAttribute("propertyId", propertyId);
+	    }
+	    return "tenant_dashboard"; // Your JSP page
+	}
+	
 
 }

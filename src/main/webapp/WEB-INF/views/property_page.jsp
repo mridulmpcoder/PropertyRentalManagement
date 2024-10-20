@@ -43,10 +43,10 @@ List<String> facilities = (List<String>) request.getAttribute("facilities");
 			<a href="#" class="logo">Property Management</a>
 			<ul class="nav-links">
 				<li><a href="/">Home</a></li>
-				<li><a href="/property/PropertyPage">Properties</a></li>
+				<li><a href="property/PropertyPage">Properties</a></li>
 				<li><a href="/aboutUs">About Us</a></li>
 				<li><a href="/contact">Contact</a></li>
-				
+							
 			<%
 			User loggedInUser = (User) session.getAttribute("loggedInUser");
 			if (loggedInUser != null) {
@@ -57,12 +57,12 @@ List<String> facilities = (List<String>) request.getAttribute("facilities");
 				} else if (roleId == 2) {
 					roleDashboard = "manager_dashboard";
 				} else if (roleId == 3) {
-					roleDashboard = "tenant_dashboard";
+					roleDashboard = "tenantDashboard";
 				}
 			%>
 				<li class="dropdown">
 					<a href="#" class="dropbtn"><%= loggedInUser.getFirstName() %></a>
-					<div class="dropdown-content">
+					<div class="udropdown-content">
 						<a href="/user/<%= roleDashboard %>">Dashboard</a>
 						<a href="/user/viewProfile">View Profile</a>
 						<a href="/user/logout">Logout</a>
