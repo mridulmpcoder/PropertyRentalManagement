@@ -2,7 +2,8 @@
 <%@page import="property_management.app.entities.Property"%>
 <%@page import="java.util.List"%>
 
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -71,6 +72,9 @@
     %>
  
  
+
+
+
 	<!-- Constant Navigation Bar -->
 	<nav class="navbar">
 		<div class="navbar-container">
@@ -80,6 +84,7 @@
 				<li><a href="/property/PropertyPage">Properties</a></li>
 				<li><a href="/aboutUs">About Us</a></li>
 				<li><a href="/contact">Contact</a></li>
+
 							
 			<%
 			if (loggedInUser != null) {
@@ -198,7 +203,6 @@
 	   
 	   
 	   
-	   
-	   
+	  
 </body>
 </html>

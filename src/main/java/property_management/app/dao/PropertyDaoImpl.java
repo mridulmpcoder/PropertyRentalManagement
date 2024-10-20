@@ -2,6 +2,7 @@ package property_management.app.dao;
 
 import property_management.app.entities.Property;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -16,9 +17,8 @@ import java.util.Optional;
 import javax.sql.rowset.serial.SerialBlob;
 import javax.sql.rowset.serial.SerialException;
 
-
 @Repository
-public class PropertyDaoImpl implements PropertyDao{
+public class PropertyDaoImpl implements PropertyDao {
 
 	private final JdbcTemplate jdbcTemplate;
 
@@ -26,27 +26,37 @@ public class PropertyDaoImpl implements PropertyDao{
 		this.jdbcTemplate = jdbcTemplate;
 	}
 
-	//Fetch the latest properties to display on the homepage
-	public List<Property> getLatestProperties()
-	{
+	@Override
+	public Double getAmountByTenantId(Long tenantId) {
+	    String sql = "SELECT Price FROM property WHERE tenant_id = ?";
+	    try {
+			return jdbcTemplate.queryForObject(sql, new Object[]{tenantId}, Double.class);
+		} catch (EmptyResultDataAccessException e) {
+			// TODO Auto-generated catch block
+			return null;
+		}
+	}
+
+	// Fetch the latest properties to display on the homepage
+	public List<Property> getLatestProperties() {
 		String sql = "SELECT p.*,pt.type_name AS type FROM property p "
 					+ "JOIN property_type pt ON p.type_id = pt.type_id "
 		            + "WHERE p.status = 'active' " // Add this line
 					+ "ORDER BY p.CreatedAt DESC LIMIT 5";
 		
+
 		return jdbcTemplate.query(sql, new PropertyRowMapper());
 	}
-		
 
-	
 	// Fetch all properties
 	public List<Property> getAllProperties() {
+
 	    String sql = "SELECT p.*, pt.type_name AS type FROM property p "
 	               + "JOIN property_type pt ON p.type_id = pt.type_id"
 	               + "WHERE p.status = 'active' "; // Add this line
 	    return jdbcTemplate.query(sql, new PropertyRowMapper());
-	}
 
+	}
 
 	// Fetch properties based on search, location, and selected facilities
 	public List<Property> findProperties(String search, String location, List<String> facilities) {
@@ -119,51 +129,48 @@ public class PropertyDaoImpl implements PropertyDao{
 
 	    // Execute the query with the updated SQL and return the results
 	    return jdbcTemplate.query(sql.toString(), new PropertyRowMapper(), queryParams.toArray());
+
 	}
 
 	// Method to find a property by its ID
 	public Optional<Property> findPropertyById(int propertyId) {
-	    String sql = "SELECT p.*, pt.type_name AS type " + 
-	                 "FROM property p " +
-	                 "JOIN property_type pt ON p.type_id = pt.type_id " + 
-	                 "WHERE p.property_id = ?";
+		String sql = "SELECT p.*, pt.type_name AS type " + "FROM property p "
+				+ "JOIN property_type pt ON p.type_id = pt.type_id " + "WHERE p.property_id = ?";
 
-	    try {
-	        Property property = jdbcTemplate.queryForObject(sql, new Object[] { propertyId }, new PropertyRowMapper());
-	        return Optional.of(property); // Wrap the found property in an Optional
-	    } catch (EmptyResultDataAccessException e) {
-	        return Optional.empty(); // Return an empty Optional if no property is found
-	    }
+		try {
+			Property property = jdbcTemplate.queryForObject(sql, new Object[] { propertyId }, new PropertyRowMapper());
+			return Optional.of(property); // Wrap the found property in an Optional
+		} catch (EmptyResultDataAccessException e) {
+			return Optional.empty(); // Return an empty Optional if no property is found
+		}
 	}
 
-	 // Fetch unique cities for the location dropdown
-    public List<String> findUniqueLocations() {
-        String sql = "SELECT DISTINCT city FROM property";
-        return jdbcTemplate.queryForList(sql, String.class);
-    }
+	// Fetch unique cities for the location dropdown
+	public List<String> findUniqueLocations() {
+		String sql = "SELECT DISTINCT city FROM property";
+		return jdbcTemplate.queryForList(sql, String.class);
+	}
 
-	    
-    public Integer findPropertyIdByUserId(int userId) {
-        String sql = "SELECT property_id FROM tenants WHERE user_id = ?";
-        try {
-            Integer propertyId = jdbcTemplate.queryForObject(sql, new Object[] { userId }, Integer.class);
-            System.out.println("Property ID for User ID " + userId + ": " + propertyId);
-            return propertyId;
-        } catch (EmptyResultDataAccessException e) {
-            System.out.println("No property ID found for User ID " + userId);
-            return null;
-        }
-    }
- 
- 
-    @Override
+	public Integer findPropertyIdByUserId(int userId) {
+		String sql = "SELECT property_id FROM tenants WHERE user_id = ?";
+		try {
+			Integer propertyId = jdbcTemplate.queryForObject(sql, new Object[] { userId }, Integer.class);
+			System.out.println("Property ID for User ID " + userId + ": " + propertyId);
+			return propertyId;
+		} catch (EmptyResultDataAccessException e) {
+			System.out.println("No property ID found for User ID " + userId);
+			return null;
+		}
+	}
+
+	@Override
 	public int insertProperty(Property property) throws IOException, SerialException, SQLException {
- 
+
 		String query = "INSERT INTO property "
 				+ "(title, description, type_id, price, status, flat_no, floor, location, city, state, zip_code, latitude, longitude, swimming_pool, gym, parking, "
 				+ "garden, air_conditioning, elevator, security_system, internet, furnished, image) "
 				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
- 
+
 		byte[] propertyImageBytes = null;
 		if (property.getImage() != null && !property.getImage().isEmpty()) {
 			try {
@@ -172,7 +179,7 @@ public class PropertyDaoImpl implements PropertyDao{
 				e.printStackTrace(); // Handle exception appropriately in production
 			}
 		}
- 
+
 		// Ensure all fields match with the placeholders in the query
 		return jdbcTemplate.update(query, property.getTitle(), property.getDescription(), property.getType_id(),
 				property.getPrice(), property.getStatus(), property.getFlatNo(), property.getFloor(),
